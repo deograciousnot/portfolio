@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome | Deogracious Kiprop</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Georgia', serif;
+      color: #f5f5f5;
+      background: black;
+      overflow: hidden;
+    }
+    body {
+      background: url('forest.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      backdrop-filter: blur(3px);
+      position: relative;
+    }
+    .fog {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('mist.png') repeat;
+      opacity: 0.15;
+      animation: fogMove 60s linear infinite;
+      z-index: 0;
+    }
+    @keyframes fogMove {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 1000px; }
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 800px;
+      z-index: 1;
+    }
+    .quote {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #ddd;
+      white-space: pre-wrap;
+      min-height: 8rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .proceed {
+      margin-top: 2rem;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background: #9fc9ff;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+      display: none;
+    }
+    .proceed:hover {
+      background: #76b2ff;
+    }
+    .skip {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      text-decoration: none;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+      z-index: 1;
+    }
+    .skip:hover {
+      opacity: 1;
+    }
+    #audioToggle {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.5rem;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      font-size: 1rem;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="fog"></div>
+  <a class="skip" href="peek.html">Skip intro</a>
+  <button id="audioToggle">🔈</button>
+
+  <div class="overlay">
+    <h1>A Journey Beyond the Familiar</h1>
+    <p class="quote" id="quote"></p>
+    <a class="proceed" id="proceedBtn" href="peek.html">Enter</a>
+  </div>
+
+  <audio id="bgAudio" loop>
+    <source src="mozart.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const quoteText = `“Two roads diverged in a wood, and I—\nI took the one less traveled by,\nand that has made all the difference.”\n\nBut not every path is taken out of boldness.\nSome are taken because silence pulled us there.\nBecause questions echoed louder than answers.\n\nThis is the story behind the story.\nThis is Deogracious.`;
+
+    const quoteDiv = document.getElementById('quote');
+    const proceedBtn = document.getElementById('proceedBtn');
+    const audio = document.getElementById('bgAudio');
+    const toggleBtn = document.getElementById('audioToggle');
+
+    let i = 0;
+    let started = false;
+
+    function typeQuote() {
+      if (!started) {
+        audio.play().catch(() => {});
+        started = true;
+      }
+      if (i < quoteText.length) {
+        quoteDiv.textContent += quoteText.charAt(i);
+        i++;
+        setTimeout(typeQuote, 50);
+      } else {
+        proceedBtn.style.display = 'inline-block';
+      }
+    }
+
+    toggleBtn.onclick = () => {
+      if (audio.paused) {
+        audio.play();
+        toggleBtn.textContent = '🔈';
+      } else {
+        audio.pause();
+        toggleBtn.textContent = '🔇';
+      }
+    };
+
+    window.onload = typeQuote;
+  </script>
+</body>
+</html>

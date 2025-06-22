@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peek | Deogracious Kiprop</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f1115;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #111;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    nav a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #9fc9ff;
+    }
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 6rem;
+    }
+    .profile-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #9fc9ff;
+      box-shadow: 0 0 15px rgba(159, 201, 255, 0.4);
+    }
+    h1 {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+    p {
+      max-width: 600px;
+      line-height: 1.7;
+      margin: 1rem auto 2rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+    button {
+      padding: 0.8rem 2rem;
+      background-color: #9fc9ff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background-color: #76b2ff;
+      transform: translateY(-2px);
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="peek.html">About</a>
+    <a href="works.html">Works</a>
+    <a href="philosophy.html">Philosophy</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+
+  <div class="profile">
+    <img src="me.jpg" alt="Deogracious Kiprop" class="profile-img">
+    <h1>Hi, I'm Deogracious Kiprop</h1>
+    <p>
+      Black belt in Taekwondo. Adventurer. Philosopher. Software explorer.
+      <br>
+      Passionate about MTB, badminton, and the deep ends of thought.
+      I build with purpose and navigate life with curiosity.
+    </p>
+    <a href="works.html"><button>Proceed to Works ⟶</button></a>
+  </div>
+
+<!-- footer.html -->
+<footer>
+  &copy; 2025 Deogracious Kiprop | <a href="contact.html">Contact</a> |
+  Built with curiosity & caffeine ☕
+</footer>
+<div id="footer-container"></div>
+
+</body>
+</html>
