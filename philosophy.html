@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Philosophy | Deogracious Kiprop</title>
   <style>
     body {
@@ -16,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 4rem 2rem 8rem; /* footer space */
+      padding: 4rem 2rem 8rem;
       backdrop-filter: blur(4px);
     }
     nav {
@@ -42,7 +42,7 @@
     }
     h1 {
       font-size: 2.3rem;
-      margin: 6rem 0 2rem; /* offset for nav */
+      margin: 6rem 0 2rem;
     }
     .grid {
       display: grid;
@@ -71,6 +71,26 @@
       font-size: 1rem;
       color: #ccc;
       line-height: 1.6;
+    }
+    .learn-btn {
+      margin-top: 1rem;
+      background: none;
+      border: 1px solid #9fc9ff;
+      color: #9fc9ff;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      border-radius: 20px;
+      transition: background 0.3s;
+    }
+    .learn-btn:hover {
+      background: #9fc9ff;
+      color: #000;
+    }
+    .more-text {
+      display: none;
+      margin-top: 1rem;
+      color: #aaa;
     }
     #audioToggle {
       position: fixed;
@@ -119,38 +139,49 @@
   </audio>
 
   <h1>Deogracious' Philosophy & Concepts</h1>
+
   <div class="grid">
     <div class="card">
       <h2>🧬 Behavior and Genetics</h2>
-      <p>
-        Are we truly free, or merely reacting to the scripts encoded deep in our genes? This section explores how inherited traits and epigenetics influence not just appearance, but behavior, preference, and even thought.
-      </p>
+      <p>Are we truly free, or merely reacting to the scripts encoded deep in our genes?</p>
+      <button class="learn-btn">Learn more</button>
+      <div class="more-text">
+        <p>Genetic predispositions guide instincts, but epigenetics—those invisible switches—can activate or silence parts of our identity based on experience. Could our choices be echoes of a long ancestral algorithm still running?</p>
+      </div>
     </div>
+
     <div class="card">
       <h2>📜 The Voynich Manuscript</h2>
-      <p>
-        More than a cryptographic mystery — it's a symbol of human curiosity and the limits of collective knowledge. What if some truths are preserved not to be solved, but to remain elusive?
-      </p>
+      <p>More than a cryptographic mystery — it's a symbol of human curiosity and the limits of collective knowledge.</p>
+      <button class="learn-btn">Learn more</button>
+      <div class="more-text">
+        <p>Its undeciphered script reminds us that language isn't always meant to be cracked. Maybe the Voynich speaks to parts of the mind that are not logical, but intuitive — a riddle designed to trigger wonder, not understanding.</p>
+      </div>
     </div>
+
     <div class="card">
       <h2>🪐 Intergalactic Theories</h2>
-      <p>
-        Advanced civilizations, Dyson spheres, Fermi Paradox... Deogracious considers the possibility that intelligent life may not seek communication — but compression, silence, or inward transcendence.
-      </p>
+      <p>Advanced civilizations, Dyson spheres, Fermi Paradox... silence is telling.</p>
+      <button class="learn-btn">Learn more</button>
+      <div class="more-text">
+        <p>What if we're looking the wrong way? Civilizations may have transcended physical communication altogether — tuning out of space-time noise in favor of introspective quantum dimensions. Maybe the universe isn't quiet... maybe it's meditating.</p>
+      </div>
     </div>
+
     <div class="card">
       <h2>🧠 The Inner Loop</h2>
-      <p>
-        Thought loops — recursive, tiring, and yet often full of wisdom. A recurring mental pattern Deogracious reclaims as a tool: for self-reflection, observation, and understanding complexity.
-      </p>
+      <p>Thought loops — recursive, tiring, yet often full of wisdom.</p>
+      <button class="learn-btn">Learn more</button>
+      <div class="more-text">
+        <p>Each loop is a spiral staircase — exhausting when you're stuck, enlightening when you gain elevation. The deeper you spiral, the more familiar the darkness becomes, until it births clarity. Sometimes, you don't break the loop — you learn to walk it.</p>
+      </div>
     </div>
   </div>
 
-<!-- footer.html -->
-<footer>
-  &copy; 2025 Deogracious Kiprop | <a href="contact.html">Contact</a> |
-  Built with curiosity & caffeine ☕
-</footer>
+  <footer>
+    &copy; 2025 Deogracious Kiprop | <a href="contact.html">Contact</a> |
+    Built with curiosity & caffeine ☕
+  </footer>
 
   <script>
     const audio = document.getElementById('bgAudio');
@@ -165,8 +196,16 @@
         toggle.textContent = '🔇';
       }
     };
-  </script>
-  <div id="footer-container"></div>
 
+    // Learn more buttons
+    document.querySelectorAll('.learn-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const moreText = button.nextElementSibling;
+        const isVisible = moreText.style.display === 'block';
+        moreText.style.display = isVisible ? 'none' : 'block';
+        button.textContent = isVisible ? 'Learn more' : 'Hide';
+      });
+    });
+  </script>
 </body>
 </html>
