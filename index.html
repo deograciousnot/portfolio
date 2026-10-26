@@ -1,157 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome | Deogracious Kiprop</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Georgia', serif;
-      color: #f5f5f5;
-      background: black;
-      overflow: hidden;
-    }
-    body {
-      background: url('forest.png') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      backdrop-filter: blur(3px);
-      position: relative;
-    }
-    .fog {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('mist.png') repeat;
-      opacity: 0.15;
-      animation: fogMove 60s linear infinite;
-      z-index: 0;
-    }
-    @keyframes fogMove {
-      from { background-position: 0 0; }
-      to { background-position: 1000px 1000px; }
-    }
-    .overlay {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 800px;
-      z-index: 1;
-    }
-    .quote {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #ddd;
-      white-space: pre-wrap;
-      min-height: 8rem;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    .proceed {
-      margin-top: 2rem;
-      padding: 0.8rem 2rem;
-      font-size: 1rem;
-      font-weight: bold;
-      background: #9fc9ff;
-      color: #000;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background 0.3s;
-      text-decoration: none;
-      display: none;
-    }
-    .proceed:hover {
-      background: #76b2ff;
-    }
-    .skip {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.5rem;
-      font-size: 0.9rem;
-      color: #ccc;
-      text-decoration: none;
-      opacity: 0.4;
-      transition: opacity 0.3s;
-      z-index: 1;
-    }
-    .skip:hover {
-      opacity: 1;
-    }
-    #audioToggle {
-      position: absolute;
-      top: 1.2rem;
-      left: 1.5rem;
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: none;
-      font-size: 1rem;
-      padding: 10px 15px;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deogracious Kiprop · Developer</title>
+  <meta name="description" content="Deogracious Kiprop: developer in Nairobi building practical software, from a farmers' marketplace app to a 3D heart viewer and an honestly tested trading bot.">
+  <meta property="og:title" content="Deogracious Kiprop · Developer">
+  <meta property="og:description" content="Practical software, built with curiosity and tested honestly.">
+  <meta property="og:image" content="https://deograciousnot.github.io/portfolio/img/farm-mobile.jpg">
+  <meta name="theme-color" content="#0d1210">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%2314201b'/><text x='32' y='43' font-size='30' text-anchor='middle' font-family='Georgia,serif' fill='%237fd1a4'>DK</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="fog"></div>
-  <a class="skip" href="peek.html">Skip intro</a>
-  <button id="audioToggle">🔈</button>
+  <a class="skip" href="#work">Skip to work</a>
 
-  <div class="overlay">
-    <h1>A Journey Beyond the Familiar</h1>
-    <p class="quote" id="quote"></p>
-    <a class="proceed" id="proceedBtn" href="peek.html">Enter</a>
-  </div>
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Back to top">DK</a>
+    <nav aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#notes">Notes</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-  <audio id="bgAudio" loop>
-    <source src="mozart.mp3" type="audio/mpeg" />
-  </audio>
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <p class="eyebrow">Nairobi, Kenya · Computer Science, University of Nairobi</p>
+        <h1>Hi, I'm Deogracious.<br><span>I build practical software, and I test my ideas honestly.</span></h1>
+        <p class="lede">Mobile apps for farmers, a 3D view of the human heart, self-hosted servers, and a trading bot I tried hard to break before trusting it. I like problems that sit between disciplines.</p>
+        <div class="cta">
+          <a class="btn primary" href="#work">See my work</a>
+          <a class="btn" href="https://github.com/deograciousnot" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+        <a class="story-link" href="story.html">Prefer the long way round? Take the story mode →</a>
+      </div>
+    </section>
 
-  <script>
-    const quoteText = `“Two roads diverged in a wood, and I—\nI took the one less traveled by,\nand that has made all the difference.”\n\nBut not every path is taken out of boldness.\nSome are taken because silence pulled us there.\nBecause questions echoed louder than answers.\n\nThis is the story behind the story.\nThis is Deogracious.`;
+    <!-- Work -->
+    <section id="work" class="wrap section">
+      <h2 class="section-title">Selected work</h2>
 
-    const quoteDiv = document.getElementById('quote');
-    const proceedBtn = document.getElementById('proceedBtn');
-    const audio = document.getElementById('bgAudio');
-    const toggleBtn = document.getElementById('audioToggle');
+      <!-- Featured: FarmConnect -->
+      <article class="featured reveal">
+        <div class="featured-media">
+          <img class="phone" src="img/farm-mobile.jpg" alt="FarmConnect welcome screen: Farmers learning from farmers" width="480" height="900" loading="lazy">
+        </div>
+        <div class="featured-body">
+          <p class="tag">Featured · Mobile app + API + dashboard</p>
+          <h3>FarmConnect</h3>
+          <p>A mobile-first marketplace and community for Kenyan farmers: ask growers in other regions what worked for them, see what's selling and for how much, trade directly, and build a trust score through honest listings and completed orders.</p>
+          <ul class="points">
+            <li><strong>Mobile app</strong> in Expo / React Native: feed, marketplace, community Q&amp;A, orders, profiles, push notifications.</li>
+            <li><strong>Node/Express API</strong> with MongoDB: JWT and SMS-code sign-in, rate limiting and spam hardening, moderation and content reporting.</li>
+            <li><strong>M-Pesa payments</strong> for listing boosts and sponsored updates, with buyer protection.</li>
+            <li><strong>Admin dashboard</strong> (React + TypeScript): analytics, revenue, broadcasts, and partner accounts for organisations.</li>
+            <li>Crash reporting with Sentry, a produced pitch video, and 40+ commits of steady iteration.</li>
+          </ul>
+          <p class="stack">Expo · React Native · TypeScript · Node.js · Express · MongoDB · Socket.io · Cloudinary · M-Pesa · Render</p>
+          <div class="links">
+            <a href="https://github.com/deograciousnot/Farm" target="_blank" rel="noopener">Code on GitHub →</a>
+          </div>
+        </div>
+      </article>
 
-    let i = 0;
-    let started = false;
+      <div class="grid">
+        <!-- heart3D -->
+        <article class="card reveal">
+          <img src="img/heart3d.jpg" alt="heart3D viewer: a 3D loop of the heart's electrical vector next to the 12 ECG leads" width="1400" height="640" loading="lazy">
+          <div class="card-body">
+            <p class="tag">Biomedical · Visualisation</p>
+            <h3>heart3D</h3>
+            <p>An ECG isn't a picture of the heart: it's 12 one-dimensional "shadows" of one 3D arrow swinging through every heartbeat. This recovers that arrow from a real 12-lead ECG (PTB-XL dataset) and animates it in the browser.</p>
+            <p class="stack">Python · NumPy · signal processing · least squares · three.js</p>
+            <div class="links"><a href="https://github.com/deograciousnot/heart3D" target="_blank" rel="noopener">Code + write-ups →</a></div>
+          </div>
+        </article>
 
-    function typeQuote() {
-      if (!started) {
-        audio.play().catch(() => {});
-        started = true;
-      }
-      if (i < quoteText.length) {
-        quoteDiv.textContent += quoteText.charAt(i);
-        i++;
-        setTimeout(typeQuote, 50);
-      } else {
-        proceedBtn.style.display = 'inline-block';
-      }
-    }
+        <!-- Gold research -->
+        <article class="card reveal">
+          <div class="chart">
+            <img src="img/gold-research.svg" alt="Chart of 20 years of backtests: holding gold rose about tenfold, the trend strategy roughly broke even, the London breakout lost money" width="720" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <p class="tag">Quant research · Automation</p>
+            <h3>Gold trading research &amp; demo bot</h3>
+            <p>I tested five strategies on 20 years of gold prices, with real spreads, financing costs and data held back for unseen-period tests. <strong>None had a real edge</strong>, and the one that looked great on two years of data lost 69% over twenty. Then I built the bot anyway, safety first: demo-only lock, 1% risk sizing, daily loss limit, kill switch, 17 tests.</p>
+            <p class="stack">Python · pandas · MetaTrader 5 API · Dukascopy &amp; FRED data · unittest</p>
+          </div>
+        </article>
 
-    toggleBtn.onclick = () => {
-      if (audio.paused) {
-        audio.play();
-        toggleBtn.textContent = '🔈';
-      } else {
-        audio.pause();
-        toggleBtn.textContent = '🔇';
-      }
-    };
+        <!-- Flight Plan -->
+        <article class="card reveal">
+          <img src="img/flightplan.jpg" alt="Flight Plan: a self-study tracker where finished tasks raise your altitude toward ISS orbit" width="1400" height="860" loading="lazy">
+          <div class="card-body">
+            <p class="tag">Education · Aerospace</p>
+            <h3>Flight Plan</h3>
+            <p>A free, self-paced route from rusty maths to orbital mechanics, CAD and simulation: 72 tasks in six phases. Every finished task raises your altitude, from the launch pad to the orbit of the International Space Station.</p>
+            <p class="stack">HTML · CSS · JavaScript · GitHub Pages</p>
+            <div class="links">
+              <a href="http://ardesams.com" target="_blank" rel="noopener">Live site →</a>
+              <a href="https://github.com/deograciousnot/flightplan" target="_blank" rel="noopener">Code →</a>
+            </div>
+          </div>
+        </article>
 
-    window.onload = typeQuote;
-  </script>
+        <!-- Transform Lab -->
+        <article class="card reveal">
+          <img src="img/transformlab.jpg" alt="Transform Lab: practice questions on 2D geometric transformations with a live plot" width="1400" height="860" loading="lazy">
+          <div class="card-body">
+            <p class="tag">Study tool · Computer graphics</p>
+            <h3>Transform Lab</h3>
+            <p>Endless practice for 2D geometric transformations (translation, scaling, rotation, reflection, shear and composites) in the style of my computer graphics lectures, with hints, full worked solutions and a live plot of your answer.</p>
+            <p class="stack">JavaScript · linear algebra · SVG</p>
+          </div>
+        </article>
+
+        <!-- Home server -->
+        <article class="card wide reveal">
+          <img src="img/homeserver.jpg" alt="Home server dashboard showing CPU, memory, disks and links to Cockpit, Portainer and AdGuard" width="1400" height="400" loading="lazy">
+          <div class="card-body">
+            <p class="tag">Infrastructure · Linux</p>
+            <h3>Home server from an old PC</h3>
+            <p>Brought a 2009 desktop back to life: upgraded Ubuntu 20.04 → 24.04 in place over SSH, fixed IP, reclaimed 73 GB of unused disk, turned an old Windows drive into 145 GB of storage, then self-hosted a dashboard, Cockpit, Portainer and AdGuard in Docker. Its old CPU lacks AVX, so I worked around what modern software assumes.</p>
+            <p class="stack">Ubuntu · SSH · LVM · Docker Compose · netplan · systemd</p>
+          </div>
+        </article>
+      </div>
+
+      <details class="earlier reveal">
+        <summary>Earlier projects</summary>
+        <ul>
+          <li><strong>QR payment app</strong>: verified businesses generate QR codes and get paid by customers through M-Pesa.</li>
+          <li><strong>Inventory system</strong>: stock tracking with profit and loss for an auto spare-parts shop and a barbershop.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- Skills -->
+    <section class="wrap section" aria-labelledby="skills-title">
+      <h2 id="skills-title" class="section-title">What I work with</h2>
+      <div class="skills reveal">
+        <div><h3>Apps</h3><p>React Native / Expo, React, TypeScript, HTML/CSS/JS</p></div>
+        <div><h3>Back end</h3><p>Node.js, Express, MongoDB, REST APIs, auth, payments (M-Pesa)</p></div>
+        <div><h3>Data &amp; science</h3><p>Python, pandas, NumPy, backtesting, signal processing, three.js</p></div>
+        <div><h3>Infrastructure</h3><p>Linux, Docker, SSH, Git &amp; GitHub, Render, GitHub Pages</p></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="wrap section about">
+      <h2 class="section-title">About me</h2>
+      <div class="about-body reveal">
+        <p>I'm a Computer Science student at the University of Nairobi. I learn by building: when something interests me, whether it's how an ECG works, how rockets reach orbit or whether a trading strategy is real, I go and make a thing that answers the question.</p>
+        <p>Away from the keyboard I'm a <strong>Taekwondo black belt</strong>, I ride mountain bikes, play badminton, and drop into Call of Duty: Mobile more often than I should. I also spend a lot of time on the deep end of thought.</p>
+      </div>
+    </section>
+
+    <!-- Notes (the old Philosophy page, condensed) -->
+    <section id="notes" class="wrap section">
+      <h2 class="section-title">Notes from the deep end</h2>
+      <div class="notes reveal">
+        <details><summary>🧬 Behaviour and genetics</summary><p>Genetic predispositions guide instincts, but epigenetics, those invisible switches, can activate or silence parts of our identity based on experience. Could our choices be echoes of a long ancestral algorithm still running?</p></details>
+        <details><summary>📜 The Voynich manuscript</summary><p>Its undeciphered script reminds us that language isn't always meant to be cracked. Maybe it speaks to parts of the mind that are intuitive rather than logical: a riddle designed to trigger wonder, not understanding.</p></details>
+        <details><summary>🪐 The silent universe</summary><p>What if we're looking the wrong way? Civilisations may have moved past physical communication altogether. Maybe the universe isn't quiet. Maybe it's meditating.</p></details>
+        <details><summary>🧠 The inner loop</summary><p>Each thought loop is a spiral staircase: exhausting when you're stuck, enlightening when you gain elevation. Sometimes you don't break the loop. You learn to walk it.</p></details>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="wrap section contact">
+      <h2 class="section-title">Let's build something</h2>
+      <p class="reveal">Open to freelance work, internships and collaborations, especially websites and apps for local businesses, data tools, and anything that sits between software and science.</p>
+      <div class="cta reveal">
+        <a class="btn primary" href="mailto:ardesamsco@gmail.com">Email me</a>
+        <a class="btn" href="https://github.com/deograciousnot" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://instagram.com/deograciousnot" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p>© <span id="year">2026</span> Deogracious Kiprop · Built with curiosity &amp; caffeine ☕</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
