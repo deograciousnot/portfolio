@@ -1,153 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Story mode · Deogracious Kiprop</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Georgia', serif;
-      color: #f5f5f5;
-      background: black;
-      overflow: hidden;
-    }
-    body {
-      background: url('img/forest.jpg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      backdrop-filter: blur(3px);
-      position: relative;
-    }
-    .fog {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('mist.png') repeat;
-      opacity: 0.15;
-      animation: fogMove 60s linear infinite;
-      z-index: 0;
-    }
-    @keyframes fogMove {
-      from { background-position: 0 0; }
-      to { background-position: 1000px 1000px; }
-    }
-    .overlay {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 800px;
-      z-index: 1;
-    }
-    .quote {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #ddd;
-      white-space: pre-wrap;
-      min-height: 8rem;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    .proceed {
-      margin-top: 2rem;
-      padding: 0.8rem 2rem;
-      font-size: 1rem;
-      font-weight: bold;
-      background: #9fc9ff;
-      color: #000;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background 0.3s;
-      text-decoration: none;
-      display: none;
-    }
-    .proceed:hover {
-      background: #76b2ff;
-    }
-    .skip {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.5rem;
-      font-size: 0.9rem;
-      color: #ccc;
-      text-decoration: none;
-      opacity: 0.4;
-      transition: opacity 0.3s;
-      z-index: 1;
-    }
-    .skip:hover {
-      opacity: 1;
-    }
-    #audioToggle {
-      position: absolute;
-      top: 1.2rem;
-      left: 1.5rem;
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: none;
-      font-size: 1rem;
-      padding: 10px 15px;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Long Way Round · Deogracious Kiprop</title>
+  <meta name="description" content="A first-person journey through the worlds Deogracious Kiprop builds in: a misty forest, a heartbeat, farmland, a gold vault, a launch pad, a server room, a battle royale drop and the deep end.">
+  <meta name="theme-color" content="#0b0f0d">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23161616'/><path d='M8 36h12l5-14 7 26 6-18 4 6h14' fill='none' stroke='%23ff6b55' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="story/story.css">
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+  </script>
 </head>
 <body>
-  <div class="fog"></div>
-  <a class="skip" href="index.html">Skip intro</a>
-  <button id="audioToggle" aria-label="Play music">🔇 Play music</button>
+  <canvas id="world" aria-hidden="true"></canvas>
 
-  <div class="overlay">
+  <!-- Cinematic letterbox bars -->
+  <div class="bar top" aria-hidden="true"></div>
+  <div class="bar bottom" aria-hidden="true"></div>
+
+  <!-- Always available: leave, and music -->
+  <a class="corner skip" href="index.html">Skip to the portfolio →</a>
+  <button class="corner music" type="button" aria-pressed="false">♪ Sound: off</button>
+
+  <!-- Title screen -->
+  <section class="start" id="start">
+    <p class="kicker">A story in eight worlds</p>
+    <h1>The Long Way Round</h1>
+    <p class="sub">First person. About five minutes. Headphones help.</p>
+    <div class="choices">
+      <button type="button" class="go" data-music="on">Begin, with sound</button>
+      <button type="button" class="go quiet" data-music="off">Begin quietly</button>
+    </div>
+    <p class="resume" hidden><button type="button" class="link" id="restart">Start over</button></p>
+    <p class="loading" id="loading">Loading the world…</p>
+  </section>
+
+  <!-- In-story HUD -->
+  <div class="hud" id="hud" hidden>
+    <p class="chapter" id="chapter"></p>
+    <ol class="fragments" id="fragments" aria-label="Fragments collected"></ol>
+  </div>
+  <div class="title-card" id="card" aria-live="polite"></div>
+  <div class="narration" id="narration" aria-live="polite" hidden>
+    <p id="line"></p>
+    <span class="hint" id="hint">tap or press space</span>
+  </div>
+  <div class="prompt" id="prompt" aria-live="polite" hidden></div>
+
+  <!-- End of what's built so far -->
+  <section class="end" id="end" hidden>
+    <p class="kicker" id="end-kicker"></p>
+    <h2 id="end-title"></h2>
+    <p id="end-text"></p>
+    <div class="choices">
+      <a class="go" href="index.html">Enter the portfolio</a>
+      <button type="button" class="go quiet" id="again">Walk it again</button>
+    </div>
+  </section>
+
+  <!-- Fallback for devices without 3D: the original intro -->
+  <section class="classic" id="classic" hidden>
     <h1>A Journey Beyond the Familiar</h1>
     <p class="quote" id="quote"></p>
-    <a class="proceed" id="proceedBtn" href="index.html">Enter</a>
-  </div>
+    <a class="go" href="index.html">Enter</a>
+  </section>
 
-  <!-- Music only loads and plays if the visitor asks for it -->
-  <audio id="bgAudio" loop preload="none">
-    <source src="mozart.mp3" type="audio/mpeg" />
-  </audio>
-
-  <script>
-    const quoteText = `“Two roads diverged in a wood, and I—\nI took the one less traveled by,\nand that has made all the difference.”\n\nBut not every path is taken out of boldness.\nSome are taken because silence pulled us there.\nBecause questions echoed louder than answers.\n\nThis is the story behind the story.\nThis is Deogracious.`;
-
-    const quoteDiv = document.getElementById('quote');
-    const proceedBtn = document.getElementById('proceedBtn');
-    const audio = document.getElementById('bgAudio');
-    const toggleBtn = document.getElementById('audioToggle');
-
-    let i = 0;
-
-    function typeQuote() {
-      if (i < quoteText.length) {
-        quoteDiv.textContent += quoteText.charAt(i);
-        i++;
-        setTimeout(typeQuote, 35);
-      } else {
-        proceedBtn.style.display = 'inline-block';
-      }
-    }
-
-    toggleBtn.onclick = () => {
-      if (audio.paused) {
-        audio.play();
-        toggleBtn.textContent = '🔈 Pause music';
-      } else {
-        audio.pause();
-        toggleBtn.textContent = '🔇 Play music';
-      }
-    };
-
-    window.onload = typeQuote;
-  </script>
+  <script type="module" src="story/main.js"></script>
 </body>
 </html>
