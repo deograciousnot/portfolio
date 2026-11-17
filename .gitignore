@@ -1,0 +1,6 @@
+# Blender working files and render output (the site only uses the finished images and video)
+*.blend
+*.blend1
+blender/frames/
+blender/*.png
+img/magneto-exploded.png

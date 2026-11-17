@@ -3,303 +3,425 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deogracious Kiprop · Developer</title>
-  <meta name="description" content="Deogracious Kiprop: developer in Nairobi building software that answers real questions, from a 3D heart viewer built on hospital ECGs to a farmers' marketplace app and an honestly tested trading bot.">
+  <title>Deogracious Kiprop · Sketchbook</title>
+  <meta name="description" content="The sketchbook of Deogracious Kiprop, a CS student in Nairobi who draws things before building them: a 3D heart from hospital ECGs, a marketplace for Kenyan farmers, an honestly tested trading bot, a route to orbit, an idea that got killed, and a question about generational curses.">
   <link rel="canonical" href="https://deogracious.ardesams.com/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://deogracious.ardesams.com/">
-  <meta property="og:title" content="Deogracious Kiprop · Developer">
-  <meta property="og:description" content="Software that answers questions, built with curiosity and tested honestly.">
-  <meta property="og:image" content="https://deogracious.ardesams.com/img/heart3d-viewer.jpg">
+  <meta property="og:title" content="Deogracious Kiprop · Sketchbook">
+  <meta property="og:description" content="I sketch it in the air, take it apart in my head, then build it for real.">
+  <meta property="og:image" content="https://deogracious.ardesams.com/img/magneto-sketch.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23161616'/><path d='M8 36h12l5-14 7 26 6-18 4 6h14' fill='none' stroke='%23ff6b55' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <meta name="theme-color" content="#f6f1e4">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='10' fill='%23f6f1e4'/><path d='M32 7c9 8 11 21 8 33H24c-3-12-1-25 8-33zM24 40l-8 11 10-4M40 40l8 11-10-4' fill='none' stroke='%232a2826' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'/><path d='M28 50l4 8 4-8' fill='none' stroke='%23b8432a' stroke-width='3' stroke-linecap='round'/></svg>">
   <script>
-    /* Apply a saved theme before first paint, so there is no flash */
-    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    try { var t = localStorage.getItem("page"); if (t) document.documentElement.dataset.page = t; } catch (e) {}
+    document.documentElement.classList.add("js");
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Special+Elite&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip" href="#work">Skip to work</a>
+  <a class="skip" href="#contents">Skip to contents</a>
 
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <a class="brand" href="#top" aria-label="Deogracious Kiprop, back to top">
-        <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M1 14h8l3-8 5 15 4-11 3 4h15"/></svg>
-        <span>DK</span>
-      </a>
+  <!-- The pencil: a wobble filter for anything hand-drawn -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+  </svg>
+  <canvas id="graphite" aria-hidden="true"></canvas>
+
+  <!-- PAGE 0: the welcome -->
+  <div class="welcome" id="welcome" aria-hidden="true">
+    <canvas id="scribble"></canvas>
+    <div class="welcome-inner">
+      <p class="type">Page 0 · before we start</p>
+      <p class="hand big write" style="--d:.3s">I've been waiting for you.</p>
+      <p class="hand mid ink write" style="--d:1.5s">Ready for an adventure?</p>
+      <div class="welcome-go">
+        <button type="button" class="go" id="go">let's go →</button>
+        <button type="button" class="type clap" id="clap">or clap</button>
+      </div>
+    </div>
+    <p class="hand note-arrow">← your cursor is a pencil. scribble!</p>
+  </div>
+
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand hand" href="#top">Deo's sketchbook</a>
       <nav aria-label="Main">
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#contents">contents</a>
+        <a href="#builds">builds</a>
+        <a href="#curses">essay</a>
+        <a href="#contact">say hi</a>
       </nav>
-      <button class="theme" type="button" aria-label="Switch between light and dark theme">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" class="fill"/></svg>
+      <button class="lamp" type="button" aria-label="Switch between day page and night page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/></svg>
+        <span class="type">night page</span>
       </button>
     </div>
   </header>
 
   <main id="top">
-    <!-- Hero -->
-    <section class="hero wrap">
-      <p class="label">Nairobi, Kenya · Computer Science, University of Nairobi</p>
-      <h1>Deogracious Kiprop</h1>
-      <p class="statement">I build software that answers questions, and I test my ideas honestly.</p>
-      <div class="monitor" aria-hidden="true">
-        <svg class="trace" viewBox="0 0 1000 120" preserveAspectRatio="none">
-          <path id="trace-path" d="M0 70 H130 q12 -14 24 0 H190 l10 8 l14 -70 l14 96 l10 -34 H300 q30 -26 60 0 H470 q12 -14 24 0 H530 l10 8 l14 -70 l14 96 l10 -34 H640 q30 -26 60 0 H810 q12 -14 24 0 H870 l10 8 l14 -70 l14 96 l10 -34 H1000"/>
-          <circle class="blip" r="5" cx="-20" cy="70"/>
-        </svg>
-        <span class="bpm"><span class="heart">♥</span> <b id="bpm">64</b> bpm</span>
-      </div>
-      <p class="lede">A 3D view of the heart rebuilt from real hospital ECGs, a marketplace app for Kenyan farmers, self-hosted servers, and a trading bot I tried hard to break before trusting it. I like problems that sit between disciplines.</p>
-      <div class="cta">
-        <a class="btn primary" href="#work">See my work</a>
-        <a class="btn" href="https://github.com/deograciousnot" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" href="#contact">Get in touch</a>
+    <!-- PAGE 1: Fig. 1 -->
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="type">Fig. 1 · Exploded view of D. Kiprop · Nairobi, Kenya</p>
+        <h1 class="hand" id="hero-title">Deogracious Kiprop</h1>
+        <p class="statement">I sketch it in the air, take it apart in my head, <em>then build it for real.</em></p>
+        <p class="lede">I study computer science at the University of Nairobi, but I think in drawings. I build things for problems that matter (hearts, farms, money, flight), I test my ideas honestly, and sometimes I keep thinking long after the code is done.</p>
+        <p class="hand aside ink">CS @ UoN · aiming for orbit ↗</p>
       </div>
 
-      <aside class="now" aria-labelledby="now-title">
-        <p class="label" id="now-title"><span class="live-dot" aria-hidden="true"></span>Now · November 2026</p>
-        <ul>
-          <li><b>Checking</b> whether the one gold trading rule that survived 33 tests works anywhere else. So far: no.</li>
-          <li><b>Running</b> my home server on an old HP laptop: Ubuntu 26.04, Docker, a self-hosted dashboard, and a battery for power cuts.</li>
-          <li><b>Thinking</b> about whether "generational curses" are really genetics, epigenetics and family patterns.</li>
-          <li><b>Studying</b> computer graphics at the University of Nairobi, which is how Transform Lab happened.</li>
+      <figure class="rocket" id="rocket" aria-label="A pencil drawing of a rocket in exploded view. Each part is labelled with one side of me.">
+        <svg viewBox="-50 0 490 660" class="drawn">
+          <path class="axis" pathLength="1" d="M190 0V660"/>
+          <g class="part" style="--off:-78">
+            <path pathLength="1" d="M190 74c26 22 34 66 30 112h-60c-4-46 4-90 30-112z"/>
+            <path pathLength="1" class="hatch" d="M170 160l14-30M176 176l20-42M192 182l18-38"/>
+            <g class="label"><path pathLength="1" class="lead" d="M222 128c30-6 54-8 84-6"/><text x="312" y="118">A · ambition</text><text x="312" y="140" class="sub">always aimed up</text></g>
+          </g>
+          <g class="part" style="--off:-44">
+            <path pathLength="1" d="M160 188h60v62h-60z"/>
+            <path pathLength="1" d="M176 206h28v26h-28z"/>
+            <g class="label"><path pathLength="1" class="lead" d="M222 218h84"/><text x="312" y="212">B · social good</text><text x="312" y="234" class="sub">what it's all for</text></g>
+          </g>
+          <g class="part" style="--off:-14">
+            <path pathLength="1" d="M160 252h60v40h-60z"/>
+            <path pathLength="1" class="hatch" d="M168 262h12v8h-12zM186 270h14v10h-14zM204 260h8v14h-8z"/>
+            <g class="label"><path pathLength="1" class="lead" d="M158 272c-30 0-56 2-80 6"/><text x="72" y="268" text-anchor="end">C · computer</text><text x="72" y="290" text-anchor="end">science</text></g>
+          </g>
+          <g class="part" style="--off:16">
+            <path pathLength="1" d="M160 294h60v140h-60z"/>
+            <path pathLength="1" class="thin" d="M160 330h60M160 366h60M160 402h60"/>
+            <g class="label"><path pathLength="1" class="lead" d="M222 352h84"/><text x="312" y="340">D · fuel</text><text x="312" y="362" class="sub">music, poetry,</text><text x="312" y="382" class="sub">deep philosophy</text></g>
+          </g>
+          <g class="part" style="--off:48">
+            <path pathLength="1" d="M160 380l-40 70 40-14zM220 380l40 70-40-14z"/>
+            <g class="label"><path pathLength="1" class="lead" d="M262 440c20 4 32 6 44 6"/><text x="312" y="440">E · black belt</text><text x="312" y="462" class="sub">stability</text></g>
+          </g>
+          <g class="part" style="--off:82">
+            <path pathLength="1" class="red" d="M172 436h36l-6 14 14 34h-52l14-34z"/>
+            <g class="flame"><path pathLength="1" class="red" d="M172 488c4 30 12 50 18 74 6-24 14-44 18-74"/><path pathLength="1" class="red thin" d="M182 492c2 18 5 30 8 44 3-14 6-26 8-44"/></g>
+            <g class="label"><path pathLength="1" class="lead" d="M166 470c-30 6-56 12-84 24"/><text x="76" y="494" text-anchor="end">F · builder</text><text x="76" y="516" text-anchor="end" class="sub">I make the thing</text></g>
+          </g>
+        </svg>
+        <figcaption class="type">scroll and it comes together · then it flies</figcaption>
+      </figure>
+    </section>
+
+    <!-- PAGE 2: contents -->
+    <section id="contents" class="wrap page contents" aria-labelledby="contents-title">
+      <h2 class="hand" id="contents-title">Contents</h2>
+      <p class="type">click a page to jump · or just keep scrolling</p>
+      <ol class="toc">
+        <li><a href="#heart3d"><span class="hand">heart3D</span><i></i><span class="type">a heartbeat in 3D</span></a></li>
+        <li><a href="#farm"><span class="hand">FarmConnect</span><i></i><span class="type">for farmers</span></a></li>
+        <li><a href="#gold"><span class="hand">The gold bot</span><i></i><span class="type">33 tried, 1 survived</span></a></li>
+        <li><a href="#flight"><span class="hand">Flight Plan</span><i></i><span class="type">maths to orbit</span></a></li>
+        <li><a href="#server"><span class="hand">Home server</span><i></i><span class="type">a 2009 PC, revived</span></a></li>
+        <li><a href="#killed"><span class="hand">The idea I killed</span><i></i><span class="type">magnetos &amp; honesty</span></a></li>
+        <li><a href="#curses"><span class="hand">Are generational curses just genetics?</span><i></i><span class="type">an essay</span></a></li>
+        <li><a href="#deep"><span class="hand">Margin notes</span><i></i><span class="type">2 am thoughts</span></a></li>
+        <li><a href="#contact"><span class="hand">Let's build something</span><i></i><span class="type">say hi</span></a></li>
+      </ol>
+      <aside class="sticky now" aria-labelledby="now-title">
+        <p class="type" id="now-title">lately · Nov 2026</p>
+        <ul class="hand">
+          <li>checking if my one surviving gold rule works anywhere else (so far: no)</li>
+          <li>running my home server on an old HP laptop</li>
+          <li>reading about epigenetics, still</li>
+          <li>rendering magnetos in Blender</li>
         </ul>
       </aside>
     </section>
 
-    <!-- Work -->
-    <section id="work" class="wrap section" aria-labelledby="work-title">
-      <header class="section-head">
-        <span class="num">§1</span>
-        <h2 id="work-title">Selected work</h2>
-      </header>
-
-      <!-- 01 heart3D -->
-      <article class="entry lead reveal" aria-labelledby="p-heart3d">
-        <figure class="shot browser mini-heart">
-          <span class="dots"><i></i><i></i><i></i><b>one real heartbeat · drag to rotate</b></span>
-          <!-- Live 3D heart vector (canvas). The screenshot is the fallback without JavaScript. -->
-          <img class="fallback" src="img/heart3d-viewer.jpg" alt="The heart3D viewer: a 3D loop of the heart's electrical vector next to the 12 ECG leads" width="1234" height="860" loading="lazy">
-          <canvas id="heart" hidden aria-label="A real heartbeat's electrical vector, rotating in 3D. Drag to turn it."></canvas>
-          <figcaption class="legend" hidden>
-            <span class="p">P wave · atria</span><span class="qrs">QRS · ventricles</span><span class="t">T wave · reset</span>
-          </figcaption>
-        </figure>
-        <div class="entry-body">
-          <p class="label"><span class="idx">01</span> Biomedical · AI · 3D</p>
-          <h3 id="p-heart3d">heart3D</h3>
-          <p class="pitch">An ECG is twelve flat shadows of one arrow swinging through the heart. heart3D rebuilds that arrow in 3D from real hospital recordings, plays it on a real heart shape with the electrical wave sweeping across it, and lets two AI models read the trace and show which part of the heartbeat drove their answer.</p>
-          <dl class="facts">
-            <div><dt>21,799</dt><dd>real ECGs (PTB-XL)</dd></div>
-            <div><dt>0.93</dt><dd>AUC, 5 diagnosis groups</dd></div>
-            <div><dt>19</dt><dd>CT scans behind the 3D heart</dd></div>
-          </dl>
-          <ul class="points">
-            <li>Reconstructs the 3D heart vector with the Kors matrix and plays it in three.js.</li>
-            <li><strong>A real heart in 3D</strong>: the average adult heart from 19 CT scans, with an activation wave timed to each ECG through the atria, then the ventricles. It also models bundle branch blocks and shades the likely heart-attack wall.</li>
-            <li><strong>Live mode</strong> streams an ECG into the viewer as if from a bedside device, with vitals and both AI models updating as it plays.</li>
-            <li>Redesigned as an ECG instrument: a paper chart theme, a dark monitor theme, and a true 12-lead layout.</li>
-            <li>A gradient-boosted model on measurements and a 1D ResNet on raw signals, both close to published benchmarks.</li>
+    <!-- BUILDS -->
+    <div id="builds">
+      <!-- heart3D -->
+      <article class="spread reveal" id="heart3d" aria-labelledby="p-heart3d">
+        <div class="leaf">
+          <p class="type">Build 01 · biomedical · AI · 3D</p>
+          <h3 class="hand" id="p-heart3d">heart3D</h3>
+          <p>An ECG is twelve flat shadows of one arrow swinging through the heart. heart3D rebuilds that arrow in 3D from real hospital recordings, plays it on a real heart shape with the electrical wave sweeping across it, and lets two AI models read the trace and show which part of the heartbeat drove their answer.</p>
+          <ul class="facts hand">
+            <li><b>21,799</b> real ECGs</li>
+            <li><b>0.93</b> AUC, 5 diagnosis groups</li>
+            <li><b>19</b> CT scans behind the heart</li>
           </ul>
-          <p class="note">A learning tool, not a medical device.</p>
-          <p class="stack">Python · NumPy · scikit-learn · PyTorch · signal processing · three.js</p>
-          <div class="links">
-            <a href="https://heart3d.ardesams.com" target="_blank" rel="noopener">Open the live viewer <span aria-hidden="true">↗</span></a>
-            <a href="https://github.com/deograciousnot/heart3D" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
-          </div>
+          <p class="small">A gradient-boosted model on measurements and a 1D ResNet on raw signals, both close to published benchmarks. Live mode streams an ECG in as if from a bedside monitor. A learning tool, not a medical device.</p>
+          <p class="stack type">Python · NumPy · scikit-learn · PyTorch · signal processing · three.js</p>
+          <p class="links hand"><a href="https://heart3d.ardesams.com" target="_blank" rel="noopener">open the live viewer ↗</a> <a href="https://github.com/deograciousnot/heart3D" target="_blank" rel="noopener">code ↗</a></p>
+        </div>
+        <div class="leaf visual">
+          <figure class="frame heart-view">
+            <img class="fallback" src="img/heart3d-viewer.jpg" alt="The heart3D viewer: a 3D loop of the heart's electrical vector next to the 12 ECG leads" width="1234" height="860" loading="lazy">
+            <canvas id="heart" hidden aria-label="One real heartbeat's electrical vector, turning in 3D. Drag to rotate it."></canvas>
+            <figcaption class="legend hand" hidden><span class="p">P · atria</span><span class="qrs">QRS · ventricles</span><span class="t">T · reset</span></figcaption>
+          </figure>
+          <p class="hand caption">↑ one real heartbeat, live. drag it around.</p>
+          <p class="sticky tilt-r hand">an ECG is 12 shadows of one arrow. I wanted to see the arrow.</p>
         </div>
       </article>
 
-      <!-- 02 FarmConnect -->
-      <article class="entry lead flip reveal" aria-labelledby="p-farm">
-        <div class="shot phone-stage" aria-hidden="true">
-          <img class="phone" src="img/farm-mobile.jpg" alt="" width="480" height="900" loading="lazy">
+      <!-- FarmConnect -->
+      <article class="spread flip reveal" id="farm" aria-labelledby="p-farm">
+        <div class="leaf">
+          <p class="type">Build 02 · social good · mobile · API</p>
+          <h3 class="hand" id="p-farm">FarmConnect</h3>
+          <p>A marketplace and community for Kenyan farmers. Ask growers in other regions what worked, see what's selling and for how much, trade directly, and build a trust score through honest listings and completed orders.</p>
+          <ol class="parts hand">
+            <li>Expo app: feed, market, Q&amp;A, orders</li>
+            <li>Node / Express API: SMS sign-in, moderation</li>
+            <li>M-Pesa payments with buyer protection</li>
+            <li>MongoDB, plus a React admin dashboard</li>
+          </ol>
+          <p class="stack type">Expo · React Native · TypeScript · Node.js · Express · MongoDB · Socket.io · M-Pesa</p>
+          <p class="links hand"><a href="https://github.com/deograciousnot/Farm" target="_blank" rel="noopener">code ↗</a></p>
         </div>
-        <div class="entry-body">
-          <p class="label"><span class="idx">02</span> Mobile app · API · Dashboard</p>
-          <h3 id="p-farm">FarmConnect</h3>
-          <p class="pitch">A mobile-first marketplace and community for Kenyan farmers: ask growers in other regions what worked, see what's selling and for how much, trade directly, and build a trust score through honest listings and completed orders.</p>
-          <ul class="points">
-            <li><strong>Expo / React Native app</strong>: feed, marketplace, community Q&amp;A, orders, profiles, push notifications.</li>
-            <li><strong>Node / Express API</strong> on MongoDB: JWT and SMS-code sign-in, rate limiting, moderation and reporting.</li>
-            <li><strong>M-Pesa payments</strong> for listing boosts and sponsored posts, with buyer protection.</li>
-            <li><strong>Admin dashboard</strong> in React + TypeScript: analytics, revenue, broadcasts and partner accounts.</li>
-          </ul>
-          <p class="stack">Expo · React Native · TypeScript · Node.js · Express · MongoDB · Socket.io · M-Pesa · Sentry</p>
-          <div class="links">
-            <a href="https://github.com/deograciousnot/Farm" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+        <div class="leaf visual">
+          <figure class="taped tilt-l phone"><img src="img/farm-mobile.jpg" alt="The FarmConnect app on a phone" width="480" height="900" loading="lazy"></figure>
+          <div class="explode" tabindex="0" aria-label="Exploded sketch of FarmConnect's four layers">
+            <ol class="layers">
+              <li style="--i:0"><b>4</b></li><li style="--i:1"><b>3</b></li><li style="--i:2"><b>2</b></li><li style="--i:3"><b>1</b></li>
+            </ol>
           </div>
+          <p class="sticky tilt-r hand">farmers should be able to ask each other, and sell fair.</p>
         </div>
       </article>
 
-      <!-- 03–06 -->
-      <div class="rows">
-        <article class="row reveal" aria-labelledby="p-bot">
-          <div class="thumb chart" aria-hidden="true"><img src="img/gold-research.svg" alt="" width="720" height="300" loading="lazy"></div>
-          <div class="row-body">
-            <p class="label"><span class="idx">03</span> Quant research · Automation</p>
-            <h3 id="p-bot">Gold trading bot &amp; research</h3>
-            <p>I ran 33 strategies through one honest simulator on 20 years of gold prices: textbook indicators, news-day trades, a friend's "smart money" method, and seven 1-minute scalps. Real spreads, financing costs, a luck correction, and the last two years sealed until the end. <strong>Almost nothing survived</strong>: the scalps all lost about 100% after costs, and the SMC method lost 38%. One rule, the inside-day breakout, passed its sealed exam, but it failed on seven other markets, so it runs on a demo-only bot with a kill switch and 23 tests.</p>
-            <p class="stack">Python · pandas · NumPy · MetaTrader 5 API · Dukascopy &amp; FRED data · unittest</p>
-            <div class="links">
-              <a href="https://github.com/deograciousnot/gold-bot" target="_blank" rel="noopener">Code &amp; results <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
+      <!-- Gold bot -->
+      <article class="spread reveal" id="gold" aria-labelledby="p-gold">
+        <div class="leaf">
+          <p class="type">Build 03 · quant research · honesty</p>
+          <h3 class="hand" id="p-gold">The gold bot</h3>
+          <p>I put 33 strategies through one honest simulator on 20 years of gold prices, with real spreads, financing costs, a luck correction, and the last two years sealed until the very end. <strong>Almost nothing survived.</strong> Every 1-minute scalp lost about 100% after costs. The one rule that passed its sealed exam then failed on seven other markets, so it only runs on a demo account, with a kill switch and 23 tests.</p>
+          <p class="stack type">Python · pandas · NumPy · MetaTrader 5 API · Dukascopy &amp; FRED data · unittest</p>
+          <p class="links hand"><a href="https://github.com/deograciousnot/gold-bot" target="_blank" rel="noopener">code &amp; results ↗</a></p>
+        </div>
+        <div class="leaf visual">
+          <svg class="drawn funnel" viewBox="0 0 360 330" role="img" aria-label="A funnel: 33 strategies in, real costs, a sealed exam, 7 other markets, 1 demo-only rule out">
+            <path pathLength="1" d="M20 20h320L250 120H110z"/><path pathLength="1" d="M110 120h140l-30 70h-80z"/><path pathLength="1" d="M140 190h80l-18 60h-44z"/><path pathLength="1" d="M158 250h44l-10 40h-24z"/>
+            <path pathLength="1" class="red" d="M180 296v26M172 314l8 10 8-10"/>
+            <text x="180" y="56" text-anchor="middle">33 strategies · 20 yrs</text>
+            <text x="180" y="150" text-anchor="middle" class="sub">real spreads, costs, luck</text>
+            <text x="180" y="226" text-anchor="middle" class="sub">sealed exam</text>
+            <text x="216" y="276" class="sub">7 markets</text>
+            <text x="200" y="326" class="red">1 rule · demo only</text>
+          </svg>
+          <p class="sticky tilt-l hand">a friend swore by "smart money". I wanted proof. it lost 38%.</p>
+        </div>
+      </article>
 
-        <article class="row reveal" aria-labelledby="p-flight">
-          <div class="thumb" aria-hidden="true"><img src="img/flightplan.jpg" alt="" width="1400" height="860" loading="lazy"></div>
-          <div class="row-body">
-            <p class="label"><span class="idx">04</span> Education · Aerospace</p>
-            <h3 id="p-flight">Flight Plan</h3>
-            <p>A free, self-paced route from rusty maths to orbital mechanics, CAD and simulation: 72 tasks in six phases. Every finished task raises your altitude, from the launch pad to the orbit of the International Space Station.</p>
-            <p class="stack">HTML · CSS · JavaScript · GitHub Pages</p>
-            <div class="links">
-              <a href="http://ardesams.com" target="_blank" rel="noopener">Live site <span aria-hidden="true">↗</span></a>
-              <a href="https://github.com/deograciousnot/flightplan" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
+      <!-- Flight Plan -->
+      <article class="spread flip reveal" id="flight" aria-labelledby="p-flight">
+        <div class="leaf">
+          <p class="type">Build 04 · flight · free to use</p>
+          <h3 class="hand" id="p-flight">Flight Plan</h3>
+          <p>A free, self-paced route from rusty maths to orbital mechanics, CAD and simulation: 72 tasks in six phases. Every finished task raises your altitude, from the launch pad to the orbit of the International Space Station. I built it for myself first, and for anyone else who wants to fly.</p>
+          <p class="stack type">HTML · CSS · JavaScript · GitHub Pages</p>
+          <p class="links hand"><a href="http://ardesams.com" target="_blank" rel="noopener">live site ↗</a> <a href="https://github.com/deograciousnot/flightplan" target="_blank" rel="noopener">code ↗</a></p>
+        </div>
+        <div class="leaf visual">
+          <svg class="drawn climb" viewBox="0 0 360 300" role="img" aria-label="A dotted flight path climbing from rusty maths to ISS orbit">
+            <path pathLength="1" class="thin" d="M10 290h340"/>
+            <path pathLength="1" class="dash" d="M30 286C90 280 120 230 160 190S250 70 330 34"/>
+            <path pathLength="1" class="red" d="M322 30l14 2-6 12"/>
+            <text x="20" y="276" class="sub">rusty maths</text><text x="96" y="236" class="sub">physics</text><text x="150" y="176">orbital mechanics</text><text x="196" y="122" class="sub">CAD</text><text x="236" y="86" class="sub">simulation</text><text x="170" y="24" class="red">ISS orbit · 408 km</text>
+          </svg>
+          <figure class="taped tilt-r wide"><img src="img/flightplan.jpg" alt="The Flight Plan site" width="1400" height="860" loading="lazy"></figure>
+        </div>
+      </article>
 
-        <article class="row reveal" aria-labelledby="p-transform">
-          <div class="thumb" aria-hidden="true"><img src="img/transformlab.jpg" alt="" width="1400" height="860" loading="lazy"></div>
-          <div class="row-body">
-            <p class="label"><span class="idx">05</span> Study tool · Computer graphics</p>
-            <h3 id="p-transform">Transform Lab</h3>
-            <p>Endless practice for 2D geometric transformations (translation, scaling, rotation, reflection, shear and composites) in the style of my computer graphics lectures, with hints, worked solutions and a live plot of your answer.</p>
-            <p class="stack">JavaScript · linear algebra · SVG</p>
-          </div>
-        </article>
+      <!-- Home server -->
+      <article class="spread reveal" id="server" aria-labelledby="p-server">
+        <div class="leaf">
+          <p class="type">Build 05 · infrastructure · Linux</p>
+          <h3 class="hand" id="p-server">A home server from a 2009 PC</h3>
+          <p>Upgraded Ubuntu in place over SSH, reclaimed 73 GB, turned an old Windows drive into 145 GB of storage, then self-hosted a dashboard, Cockpit, Portainer and AdGuard in Docker, on a CPU too old for what modern software assumes. It now lives on an old HP laptop, with a battery for power cuts.</p>
+          <p class="stack type">Ubuntu · SSH · LVM · Docker Compose · netplan · systemd</p>
+        </div>
+        <div class="leaf visual">
+          <figure class="taped tilt-l wide"><img src="img/homeserver.jpg" alt="The home server dashboard" width="1400" height="400" loading="lazy"></figure>
+          <p class="sticky tilt-r hand">old machines deserve a second life.</p>
+        </div>
+      </article>
 
-        <article class="row reveal" aria-labelledby="p-server">
-          <div class="thumb" aria-hidden="true"><img src="img/homeserver.jpg" alt="" width="1400" height="400" loading="lazy"></div>
-          <div class="row-body">
-            <p class="label"><span class="idx">06</span> Infrastructure · Linux</p>
-            <h3 id="p-server">Home server from a 2009 PC</h3>
-            <p>Upgraded Ubuntu 20.04 → 24.04 in place over SSH, set a fixed IP, reclaimed 73 GB of disk, turned an old Windows drive into 145 GB of storage, then self-hosted a dashboard, Cockpit, Portainer and AdGuard in Docker, working around a CPU too old for what modern software assumes.</p>
-            <p class="stack">Ubuntu · SSH · LVM · Docker Compose · netplan · systemd</p>
-          </div>
-        </article>
-      </div>
-
-      <details class="earlier reveal">
-        <summary>Earlier projects</summary>
+      <details class="earlier wrap reveal">
+        <summary class="hand">older pages</summary>
         <ul>
-          <li><strong>QR payment app</strong>: verified businesses generate QR codes and get paid by customers through M-Pesa.</li>
-          <li><strong>Inventory system</strong>: stock tracking with profit and loss for an auto spare-parts shop and a barbershop.</li>
+          <li><strong>QR payment app</strong>: verified businesses generate QR codes and get paid through M-Pesa.</li>
+          <li><strong>Inventory system</strong>: stock, profit and loss for an auto spare-parts shop and a barbershop.</li>
         </ul>
       </details>
+    </div>
+
+    <!-- THE IDEA I KILLED -->
+    <section id="killed" class="wrap page killed reveal" aria-labelledby="killed-title">
+      <p class="type">Build 06 · the one that didn't work</p>
+      <h2 class="hand" id="killed-title">The idea I killed</h2>
+      <div class="killed-grid">
+        <div class="killed-text">
+          <p>A while ago I got hooked on an idea: two Bendix-style dual magnetos, a specific gear ratio and a few batteries, set up so the system would keep making more energy than it used.</p>
+          <p>The more I worked it out, the clearer it got. It was a perpetual-motion machine. A magneto turns the rotation you give it into electricity and always gives back a little less. No gear ratio changes that. So I stopped.</p>
+          <p>I didn't stop thinking about it, though. Magnetos are tough little generators that don't need a battery to work. Pointed a different way, at rotation that's <em>already happening</em> and going to waste, they could still be useful. That version is still on my drawing board.</p>
+          <p class="hand ink">Drawn in pencil, then rebuilt for real in Blender. Drag the line →</p>
+        </div>
+        <figure class="compare" id="compare" style="--x:50%">
+          <img src="img/magneto-render.jpg" alt="A photorealistic exploded render of a dual magneto: copper coils, laminated cores, rotor, gears, bearings, distributor" width="1920" height="1080" loading="lazy">
+          <div class="compare-sketch"><img src="img/magneto-sketch.jpg" alt="" width="1920" height="1080" loading="lazy"></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Wipe between the pencil sketch and the render" id="compare-range">
+          <span class="compare-line" aria-hidden="true"></span>
+          <figcaption class="type"><span>pencil</span><span>Blender · Cycles</span></figcaption>
+        </figure>
+        <div class="killed-video" id="killed-video" hidden>
+          <button type="button" class="hand play-film" id="play-film">▸ watch it come apart</button>
+          <video id="film" src="img/magneto-explode.mp4" preload="metadata" muted loop playsinline poster="img/magneto-render.jpg" hidden></video>
+        </div>
+      </div>
     </section>
 
-    <!-- Skills -->
-    <section class="wrap section" aria-labelledby="skills-title">
-      <header class="section-head">
-        <span class="num">§2</span>
-        <h2 id="skills-title">What I work with</h2>
-      </header>
-      <dl class="skills reveal">
-        <div><dt>Apps</dt><dd>React Native / Expo, React, TypeScript, HTML, CSS, JavaScript</dd></div>
-        <div><dt>Back end</dt><dd>Node.js, Express, MongoDB, REST APIs, auth, M-Pesa payments</dd></div>
-        <div><dt>Data &amp; ML</dt><dd>Python, pandas, NumPy, scikit-learn, PyTorch, signal processing, backtesting</dd></div>
-        <div><dt>Infrastructure</dt><dd>Linux, Docker, SSH, Git &amp; GitHub, Render, GitHub Pages</dd></div>
-      </dl>
-    </section>
+    <!-- THE ESSAY -->
+    <section id="curses" class="wrap page essay reveal" aria-labelledby="curses-title">
+      <p class="type">An essay · with switches</p>
+      <h2 class="hand" id="curses-title">Are generational curses just genetics?</h2>
+      <div class="essay-intro">
+        <p class="dropcap">There was a season when I questioned everything that was happening to me. I started wondering if some of it came from further back than me, the kind of thing people call a generational curse. So I went looking.</p>
+        <p>I found three things that really do pass down a family. Switch them on one at a time and watch where they go.</p>
+      </div>
 
-    <!-- About -->
-    <section id="about" class="wrap section" aria-labelledby="about-title">
-      <header class="section-head">
-        <span class="num">§3</span>
-        <h2 id="about-title">About me</h2>
-      </header>
-      <div class="about reveal">
-        <div class="about-body">
-          <p>I'm a Computer Science student at the University of Nairobi. I learn by building: when something interests me, whether it's how an ECG works, how rockets reach orbit or whether a trading strategy is real, I go and make a thing that answers the question.</p>
-          <p>Away from the keyboard, this is me:</p>
-          <a class="story-link" href="story.html">Prefer the long way round? Take the story mode <span aria-hidden="true">→</span></a>
+      <div class="tree-box">
+        <div class="switches" role="group" aria-label="What passes down">
+          <button type="button" class="switch" data-k="genes" aria-pressed="false"><span class="knob"></span><span><b class="hand">genes</b><small class="type">what you inherit</small></span></button>
+          <button type="button" class="switch" data-k="epi" aria-pressed="false"><span class="knob"></span><span><b class="hand">epigenetics</b><small class="type">switches experience flips</small></span></button>
+          <button type="button" class="switch" data-k="pattern" aria-pressed="false"><span class="knob"></span><span><b class="hand">family patterns</b><small class="type">what we learn</small></span></button>
         </div>
 
-        <!-- Notes from the deep end: a little notebook you flip through -->
-        <div class="notebook" aria-roledescription="notebook" aria-label="Notes from the deep end">
-          <p class="label">Notes from the deep end</p>
-          <div class="pages">
-            <article class="page"><h3>Behaviour and genetics</h3><p>Genetic predispositions guide instincts, but epigenetics, those invisible switches, can activate or silence parts of our identity based on experience. Could our choices be echoes of a long ancestral algorithm still running?</p></article>
-            <article class="page"><h3>The Voynich manuscript</h3><p>Its undeciphered script reminds us that language isn't always meant to be cracked. Maybe it speaks to parts of the mind that are intuitive rather than logical: a riddle designed to trigger wonder, not understanding.</p></article>
-            <article class="page"><h3>The silent universe</h3><p>What if we're looking the wrong way? Civilisations may have moved past physical communication altogether. Maybe the universe isn't quiet. Maybe it's meditating.</p></article>
-            <article class="page"><h3>The inner loop</h3><p>Each thought loop is a spiral staircase: exhausting when you're stuck, enlightening when you gain elevation. Sometimes you don't break the loop. You learn to walk it.</p></article>
-          </div>
-          <div class="page-nav">
-            <button type="button" class="prev" aria-label="Previous note">←</button>
-            <span class="page-count" aria-live="polite">1 / 4</span>
-            <button type="button" class="next" aria-label="Next note">→</button>
-          </div>
+        <svg class="drawn tree" id="tree" viewBox="0 0 620 410" role="img" aria-label="A three-generation family tree: grandparents, parents, you and a sibling, with genes, epigenetic marks and family patterns drawn on when switched on">
+          <path pathLength="1" class="thin" d="M176 80h68M210 80v60H130v34M330 174v-34h80v-34M130 226v54h200v-54M230 280v40M170 320h120M170 320v14M290 320v14"/>
+          <g class="node" transform="translate(150 80)"><circle r="26"/><text y="50" text-anchor="middle" class="sub">grandpa</text></g>
+          <g class="node" transform="translate(270 80)"><circle r="26"/><text y="50" text-anchor="middle" class="sub">grandma</text></g>
+          <g class="node" transform="translate(410 80)"><circle r="26"/><text y="50" text-anchor="middle" class="sub">other side</text></g>
+          <g class="node" transform="translate(130 200)"><circle r="26"/><text x="-36" y="6" text-anchor="end" class="sub">dad</text></g>
+          <g class="node" transform="translate(330 200)"><circle r="26"/><text x="36" y="6" class="sub">mum</text></g>
+          <g class="node you" transform="translate(170 360)"><circle r="26"/><text y="7" text-anchor="middle">you</text></g>
+          <g class="node" transform="translate(290 360)"><circle r="26"/><text x="36" y="6" class="sub">sibling</text></g>
+
+          <g class="layer layer-genes">
+            <path pathLength="1" class="blue" d="M140 70l20 20M160 70l-20 20"/>
+            <path pathLength="1" class="blue" d="M120 190l20 20M140 190l-20 20"/>
+            <path pathLength="1" class="blue dash" d="M160 350l20 20M180 350l-20 20"/>
+            <text x="214" y="404" class="blue sub">50/50: odds, not fate</text>
+          </g>
+          <g class="layer layer-epi">
+            <path pathLength="1" class="red" d="M262 6l-10 20h14l-10 20"/>
+            <text x="284" y="26" class="red sub">hard times</text>
+            <path pathLength="1" class="red" d="M250 64l-8-6M290 64l8-6M258 104l-6 8M282 104l6 8"/>
+            <path pathLength="1" class="red faint" d="M110 182l-8-6M150 182l8-6"/>
+            <path pathLength="1" class="red fainter" d="M150 342l-6-6"/>
+            <text x="372" y="250" class="red sub">mostly wiped clean</text>
+            <text x="372" y="270" class="red sub">each generation</text>
+          </g>
+          <g class="layer layer-pattern">
+            <path pathLength="1" class="green" d="M136 228c-4 46 6 76 22 100M150 320l8 10 4-12"/>
+            <path pathLength="1" class="green" d="M318 226c-30 60-80 90-112 112M212 328l-8 12 12-2"/>
+            <path pathLength="1" class="green" d="M196 350c30-18 50-18 70 0"/>
+            <text x="0" y="384" class="green sub">how conflict is</text>
+            <text x="0" y="402" class="green sub">handled, what we fear</text>
+          </g>
+          <g class="leftover">
+            <path pathLength="1" class="dash" d="M470 300c20-40 120-40 130 0s-40 70-80 60-70-20-50-60z"/>
+            <text x="535" y="338" text-anchor="middle" class="big">?</text>
+            <text x="535" y="390" text-anchor="middle" class="sub">what's left over</text>
+          </g>
+        </svg>
+
+        <div class="readout" aria-live="polite">
+          <p data-k="none">Every switch is off. All you can see is a family.</p>
+          <p data-k="genes" hidden><b class="hand blue">Genes.</b> You get a random half of each parent's DNA. A variant can raise the <em>odds</em> of something, like anxiety or addiction, but it's a coin flip at every generation, and odds aren't fate.</p>
+          <p data-k="epi" hidden><b class="hand red">Epigenetics.</b> Experience can flip chemical switches on genes (like DNA methylation) without changing the DNA itself. Most are wiped clean between generations. People conceived during the Dutch Hunger Winter still carried marks of it decades later. In mice, some marks seem to reach the grandchildren. In humans, whether they go that far is still debated.</p>
+          <p data-k="pattern" hidden><b class="hand green">Family patterns.</b> How a family handles conflict, money, fear and love gets learned, not inherited. Of the three, this passes down most reliably, and it's also the one you can most change.</p>
+          <p data-k="all" hidden><b class="hand">All three on.</b> Together they explained more than I expected. They didn't explain everything.</p>
         </div>
       </div>
 
-      <!-- Interests wall: hover (or tap) a card to flip it -->
-      <ul class="interests reveal" aria-label="Interests">
-        <li class="card"><button type="button" aria-label="Taekwondo: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="30" cy="9" r="4"/><path d="M28 15 20 26l10 4-4 12M20 26 9 21M24 21l12-6 8 2"/></svg><b>Taekwondo</b></span>
-          <span class="back"><b>Black belt</b>Discipline, footwork and getting back up. All of it transfers.</span>
-        </button></li>
-        <li class="card"><button type="button" aria-label="Mountain biking: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="11" cy="32" r="8"/><circle cx="37" cy="32" r="8"/><path d="M11 32l8-14h12l6 14M19 18l6 14h6M28 12h6"/></svg><b>Mountain biking</b></span>
-          <span class="back"><b>Trails</b>Reading terrain a few metres ahead, at speed. A good way to clear your head.</span>
-        </button></li>
-        <li class="card"><button type="button" aria-label="Badminton: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30 6a9 12 35 1 1 0 .1zM24 22 8 40M34 30l6 6M38 26l6-2M34 34l-2 6"/><circle cx="36" cy="32" r="2"/></svg><b>Badminton</b></span>
-          <span class="back"><b>Fast reflexes</b>The shuttle doesn't wait for you to finish thinking.</span>
-        </button></li>
-        <li class="card"><button type="button" aria-label="Call of Duty: Mobile: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="16" width="40" height="18" rx="9"/><path d="M14 21v8M10 25h8"/><circle cx="32" cy="23" r="1.6"/><circle cx="36" cy="27" r="1.6"/></svg><b>CODM</b></span>
-          <span class="back"><b>Call of Duty: Mobile</b>More hours than I'd like to admit. Strategy under pressure, with friends.</span>
-        </button></li>
-        <li class="card"><button type="button" aria-label="Aerospace: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c7 6 9 16 6 28H18C15 20 17 10 24 4zM18 32l-6 8 8-3M30 32l6 8-8-3M22 38l2 6 2-6"/><circle cx="24" cy="18" r="3"/></svg><b>Aerospace</b></span>
-          <span class="back"><b>Self-taught, in progress</b>Working my way from rusty maths towards orbital mechanics with Flight Plan.</span>
-        </button></li>
-        <li class="card"><button type="button" aria-label="Philosophy: show more">
-          <span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40c-9 0-15-6-15-14 0-9 7-15 15-15s15 6 15 14"/><path d="M24 40c4 0 7-3 7-7 0-3-2-6-6-6-3 0-5 2-5 5 0 2 1 3 3 3"/></svg><b>The deep end</b></span>
-          <span class="back"><b>Philosophy</b>Genetics and fate, silent universes, thought loops. The notebook above.</span>
-        </button></li>
-      </ul>
+      <div class="essay-end">
+        <p>I didn't get a conclusion I could fully sit with. I learned something real about epigenetics, and I came out of a hard season understanding myself better. But I've left a little room for whatever science can't measure yet.</p>
+        <p class="hand ink big-note">Here's what I learned, and where I stopped.</p>
+        <p class="sources type">Further reading: Heijmans et al. (2008) on the Dutch Hunger Winter · Dias &amp; Ressler (2014) on inherited fear in mice · and plenty of arguments about both.</p>
+      </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact" class="wrap section" aria-labelledby="contact-title">
-      <header class="section-head">
-        <span class="num">§4</span>
-        <h2 id="contact-title">Let's build something</h2>
-      </header>
-      <div class="contact reveal">
-        <p>Open to freelance work, internships and collaborations, especially websites and apps for local businesses, data tools, and anything that sits between software and science.</p>
-        <div class="cta">
-          <a class="btn primary" href="mailto:ardesamsco@gmail.com">Email me</a>
-          <a class="btn" href="https://github.com/deograciousnot" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="https://instagram.com/deograciousnot" target="_blank" rel="noopener">Instagram</a>
+    <!-- MARGIN NOTES: the night page -->
+    <section id="deep" class="deep" aria-labelledby="deep-title">
+      <div class="wrap">
+        <p class="type">Margin notes · 2 am</p>
+        <h2 class="hand" id="deep-title">Off the drawing board</h2>
+        <div class="deep-grid reveal">
+          <div class="notebook" aria-roledescription="notebook" aria-label="Notes from the deep end">
+            <div class="pages">
+              <article class="page"><h3 class="type">the silent universe</h3><p class="hand">What if we're looking the wrong way? Maybe the universe isn't quiet. <span class="glow">Maybe it's meditating.</span></p></article>
+              <article class="page"><h3 class="type">the inner loop</h3><p class="hand">Each thought loop is a spiral staircase. Exhausting when you're stuck, enlightening when you gain height. Sometimes you don't break the loop. <span class="glow">You learn to walk it.</span></p></article>
+              <article class="page"><h3 class="type">the Voynich manuscript</h3><p class="hand">Maybe some language isn't meant to be cracked. <span class="glow">A riddle made for wonder, not understanding.</span></p></article>
+              <article class="page"><h3 class="type">behaviour &amp; genes</h3><p class="hand">Could our choices be echoes of a long ancestral algorithm, <span class="glow">still running?</span></p></article>
+            </div>
+            <div class="page-nav">
+              <button type="button" class="prev" aria-label="Previous note">←</button>
+              <span class="page-count type" aria-live="polite">1 / 4</span>
+              <button type="button" class="next" aria-label="Next note">→</button>
+            </div>
+          </div>
+          <div class="record">
+            <button type="button" class="play" id="play" aria-pressed="false">
+              <span class="disc" aria-hidden="true"></span>
+              <span><b class="hand">put on what I think to</b><small class="type">Mozart · sound on</small></span>
+            </button>
+            <canvas id="wave" aria-hidden="true"></canvas>
+            <audio id="mozart" src="mozart.mp3" preload="none" loop></audio>
+          </div>
         </div>
+
+        <h3 class="hand op-title">the operator, off duty</h3>
+        <ul class="interests reveal" aria-label="Interests">
+          <li class="card"><button type="button" aria-label="Taekwondo: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="30" cy="9" r="4"/><path d="M28 15 20 26l10 4-4 12M20 26 9 21M24 21l12-6 8 2"/></svg><b class="hand">taekwondo</b></span><span class="back"><b class="hand">black belt</b>Discipline, footwork, and getting back up.</span></button></li>
+          <li class="card"><button type="button" aria-label="Mountain biking: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="11" cy="32" r="8"/><circle cx="37" cy="32" r="8"/><path d="M11 32l8-14h12l6 14M19 18l6 14h6M28 12h6"/></svg><b class="hand">mountain biking</b></span><span class="back"><b class="hand">trails</b>Reading terrain a few metres ahead, at speed.</span></button></li>
+          <li class="card"><button type="button" aria-label="Badminton: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30 6a9 12 35 1 1 0 .1zM24 22 8 40M34 30l6 6M38 26l6-2M34 34l-2 6"/><circle cx="36" cy="32" r="2"/></svg><b class="hand">badminton</b></span><span class="back"><b class="hand">reflexes</b>The shuttle doesn't wait for you to finish thinking.</span></button></li>
+          <li class="card"><button type="button" aria-label="Call of Duty: Mobile: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="16" width="40" height="18" rx="9"/><path d="M14 21v8M10 25h8"/><circle cx="32" cy="23" r="1.6"/><circle cx="36" cy="27" r="1.6"/></svg><b class="hand">CODM</b></span><span class="back"><b class="hand">strategy</b>Under pressure, with friends. More hours than I'll admit.</span></button></li>
+          <li class="card"><button type="button" aria-label="Flight: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c7 6 9 16 6 28H18C15 20 17 10 24 4zM18 32l-6 8 8-3M30 32l6 8-8-3M22 38l2 6 2-6"/><circle cx="24" cy="18" r="3"/></svg><b class="hand">flight</b></span><span class="back"><b class="hand">self-taught</b>From rusty maths towards orbital mechanics.</span></button></li>
+          <li class="card"><button type="button" aria-label="Technical drawing: show more"><span class="front"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40 40 6M12 40h28V12"/><path d="M30 18l4 4M22 26l4 4M14 34l4 4"/></svg><b class="hand">drawing</b></span><span class="back"><b class="hand">exploded views</b>I see things in pieces, floating, before I build them.</span></button></li>
+        </ul>
       </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="wrap page contact reveal" aria-labelledby="contact-title">
+      <h2 class="hand" id="contact-title">Let's build something</h2>
+      <p>Open to freelance work, internships and collaborations, especially anything with flight, social good or science in it, and websites and apps for local businesses.</p>
+      <p class="links hand big-links">
+        <a href="mailto:ardesamsco@gmail.com">email me</a>
+        <a href="https://github.com/deograciousnot" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://instagram.com/deograciousnot" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="story.html">story mode →</a>
+      </p>
     </section>
   </main>
 
   <footer class="wrap footer">
-    <p>© <span id="year">2026</span> Deogracious Kiprop</p>
-    <p>Built by hand: HTML, CSS and a few lines of JavaScript. <button type="button" class="term-open" aria-label="Open the terminal">psst: press <kbd>~</kbd></button></p>
+    <dl class="titleblock type">
+      <div><dt>drawn by</dt><dd>D. Kiprop</dd></div>
+      <div><dt>checked by</dt><dd>gravity</dd></div>
+      <div><dt>scale</dt><dd>1:1</dd></div>
+      <div><dt>sheet</dt><dd>© <span id="year">2026</span></dd></div>
+    </dl>
+    <button type="button" class="term-open type" aria-label="Open the typewriter">psst: press <kbd>~</kbd></button>
   </footer>
 
-  <!-- Hidden terminal: press ~ (or tap the footer hint) -->
-  <div class="terminal" id="terminal" role="dialog" aria-modal="true" aria-label="Terminal" hidden>
-    <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>deogracious@notebook: ~</span><button type="button" class="term-close" aria-label="Close terminal">×</button></div>
-    <div class="term-out" id="term-out" aria-live="polite"></div>
-    <form class="term-line" id="term-form" autocomplete="off">
-      <label for="term-in"><span class="prompt">$</span></label>
+  <div class="terminal" id="terminal" role="dialog" aria-modal="true" aria-label="Typewriter" hidden>
+    <div class="term-bar type"><span>typewriter · deo's sketchbook</span><button type="button" class="term-close" aria-label="Close">×</button></div>
+    <div class="term-out type" id="term-out" aria-live="polite"></div>
+    <form class="term-line type" id="term-form" autocomplete="off">
+      <label for="term-in"><span class="prompt">&gt;</span></label>
       <input id="term-in" spellcheck="false" autocapitalize="off" aria-label="Command">
     </form>
   </div>
