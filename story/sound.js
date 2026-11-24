@@ -177,10 +177,24 @@ export function createSound() {
     }, 2600);
   }
 
+  // A slow clock ticking somewhere in the vault
+  function clock(out) {
+    let tock = false;
+    every(1000, () => {
+      if (!enabled) return;
+      const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain(), bp = ac.createBiquadFilter();
+      bp.type = "bandpass"; bp.frequency.value = tock ? 1800 : 2400; bp.Q.value = 8;
+      o.type = "square"; o.frequency.value = tock ? 900 : 1200; tock = !tock;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.05, t + 0.003); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+      o.connect(bp); bp.connect(g); g.connect(out.gain); o.start(t); o.stop(t + 0.06);
+    });
+  }
+
   const SCENES = {
     forest(out) { wind(out, 0.6); crickets(out); owl(out); pad(out, 57); melody(out, 69); },
     heart(out) { drone(out, 55); bloodRush(out); pad(out, 52); melody(out, 64); },
     fields(out) { wind(out, 0.35); birds(out); pad(out, 60); melody(out, 72); },
+    vault(out) { drone(out, 49); clock(out); pad(out, 50); melody(out, 62); },
   };
 
   function stopScene() {
@@ -224,6 +238,8 @@ export function createSound() {
         o.connect(g); g.connect(master); o.start(t); o.stop(t + 2.6);
       });
     },
+    // A low thud (a wrong guess)
+    thud() { if (ac && enabled) thump(ac.currentTime, 48, 0.4); },
     // A heartbeat, now. `speed` < 1 stretches the gap between lub and dub (slow motion).
     pulse(speed = 1) {
       if (!ac || !enabled) return;

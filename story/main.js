@@ -5,9 +5,10 @@ import * as THREE from "three";
 import forest from "./chapters/forest.js";
 import heart from "./chapters/heart.js";
 import fields from "./chapters/fields.js";
+import vault from "./chapters/vault.js";
 import { createSound } from "./sound.js";
 
-const CHAPTERS = [forest, heart, fields];   // more worlds are added here, in order
+const CHAPTERS = [forest, heart, fields, vault];   // more worlds are added here, in order
 const TOTAL_FRAGMENTS = 8;   // one per world in the finished story
 const SAVE_KEY = "long-way-round";
 const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -273,7 +274,7 @@ function showEnd() {
   const n = progress.fragments.length;
   $("end-kicker").textContent = `${n} of ${TOTAL_FRAGMENTS} fragments`;
   $("end-title").textContent = "To be continued…";
-  $("end-text").textContent = "The other worlds (the gold vault, the launch pad, the server room, the drop and the deep end) are still being built. Come back soon.";
+  $("end-text").textContent = "The other worlds (the launch pad, the server room, the drop and the deep end) are still being built. Come back soon.";
   $("end").hidden = false;
 }
 

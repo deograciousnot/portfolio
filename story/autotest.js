@@ -97,6 +97,7 @@ export default async function autotest() {
   }
 
   // ---- Chapter 3: the fields ----
+  if (startAt <= 3) {
   log("chapter 3 started: " + await until(() => $("chapter").textContent.startsWith("3"), 20000) + " · " + $("chapter").textContent);
   const cards3 = new Set();
   const cw4 = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards3.add(c.textContent.trim().slice(0, 60)); }, 100);
@@ -110,6 +111,31 @@ export default async function autotest() {
   log("over the market: " + await until(() => $("prompt").textContent.startsWith("Tap the light"), 30000));
   clearInterval(cw4);
   log("cards: " + JSON.stringify([...cards3]));
+  key("keydown", "Enter");
+  await until(() => !$("narration").hidden, 5000);
+  log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);
+  await readLines();
+  }
+
+  // ---- Chapter 4: the gold vault ----
+  log("chapter 4 started: " + await until(() => $("chapter").textContent.startsWith("4"), 20000) + " · " + $("chapter").textContent);
+  const cards4 = [];
+  const cw5 = setInterval(() => { const c = $("card"); const txt = c.textContent.trim(); if (c.classList.contains("show") && cards4.at(-1) !== txt) cards4.push(txt); }, 100);
+  log("vault narration: " + await until(() => !$("narration").hidden, 40000));
+  await readLines();
+  log("ticker: " + (document.querySelector(".ticker:not([hidden])")?.textContent || "hidden"));
+  // Walk (hold space); at each "Next month" question, guess up
+  key("keydown", "Space");
+  let guesses = 0;
+  const guesser = setInterval(() => {
+    if ($("prompt").textContent.includes("Next month")) { key("keyup", "Space"); key("keydown", "ArrowRight"); guesses++; setTimeout(() => key("keydown", "Space"), 2500); }
+  }, 600);
+  log("walked through time: " + await until(() => !$("narration").hidden, 120000) + " · guesses made: " + guesses);
+  clearInterval(guesser); key("keyup", "Space");
+  await readLines();
+  log("at the end of the avenue: " + await until(() => $("prompt").textContent.startsWith("Tap the light"), 30000));
+  clearInterval(cw5);
+  log("cards: " + JSON.stringify(cards4.map((c) => c.slice(0, 50))));
   key("keydown", "Enter");
   await until(() => !$("narration").hidden, 5000);
   log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);

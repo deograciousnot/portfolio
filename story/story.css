@@ -78,6 +78,13 @@ h2 { font-size: clamp(2rem, 7vw, 4rem); }
   background: rgba(10, 4, 5, 0.55); border: 1px solid rgba(255,107,85,.35); border-radius: 10px; backdrop-filter: blur(6px); pointer-events: none; }
 @media (max-width: 560px) { .monitor { width: 168px; height: 49px; top: auto; bottom: max(96px, calc(env(safe-area-inset-bottom) + 90px)); } }
 
+/* Price ticker (chapter 4) */
+.ticker { position: fixed; z-index: 6; left: 14px; top: max(60px, calc(env(safe-area-inset-top) + 56px)); padding: 10px 14px;
+  background: rgba(12, 9, 5, 0.6); border: 1px solid rgba(255,195,90,.35); border-radius: 10px; backdrop-filter: blur(6px);
+  font: 500 0.78rem var(--mono); color: var(--muted); pointer-events: none; display: flex; flex-direction: column; gap: 2px; }
+.ticker b { font: 650 1.5rem var(--serif); color: #ffd27a; }
+.prompt small { display: block; margin-top: 4px; color: var(--muted); font-size: .72rem; }
+
 /* Fallback (no 3D) */
 .classic { background: #0b0f0d url("../img/forest.jpg") center / cover; }
 .classic h1 { font-size: clamp(1.8rem, 6vw, 3rem); }
