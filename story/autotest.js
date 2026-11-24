@@ -20,7 +20,7 @@ export default async function autotest() {
   await sleep(1500);
   document.querySelector(withSound ? ".start .go:not(.quiet)" : ".start .go.quiet").click();
   log(withSound ? "clicked Begin, with sound" : "clicked Begin quietly");
-  const onlyHeart = new URLSearchParams(location.search).get("chapter") === "2";
+  const startAt = parseInt(new URLSearchParams(location.search).get("chapter"), 10) || 1;
   const readLines = async () => {
     while (!$("narration").hidden) {
       await until(() => $("narration").classList.contains("ready"), 20000);
@@ -28,7 +28,7 @@ export default async function autotest() {
       key("keydown", "Space"); key("keyup", "Space"); await sleep(300);
     }
   };
-  if (!onlyHeart) {
+  if (startAt <= 1) {
   log("cinema on: " + await until(() => document.body.classList.contains("cinema"), 5000));
   const cards = new Set();
   const cardWatch = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards.add(c.textContent.trim()); }, 100);
@@ -64,6 +64,7 @@ export default async function autotest() {
   }
 
   // ---- Chapter 2: the heart ----
+  if (startAt <= 2) {
   log("chapter 2 started: " + await until(() => $("chapter").textContent.startsWith("2"), 20000) + " · " + $("chapter").textContent);
   const cards2 = new Set();
   const cw3 = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards2.add(c.textContent.trim()); }, 100);
@@ -89,6 +90,26 @@ export default async function autotest() {
   log("reached the apex: " + await until(() => $("prompt").textContent.startsWith("Tap the light"), 60000));
   clearInterval(cw3); clearInterval(guideWatch);
   log("cards in the flight: " + JSON.stringify([...cards2]));
+  key("keydown", "Enter");
+  await until(() => !$("narration").hidden, 5000);
+  log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);
+  await readLines();
+  }
+
+  // ---- Chapter 3: the fields ----
+  log("chapter 3 started: " + await until(() => $("chapter").textContent.startsWith("3"), 20000) + " · " + $("chapter").textContent);
+  const cards3 = new Set();
+  const cw4 = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards3.add(c.textContent.trim().slice(0, 60)); }, 100);
+  log("fields narration: " + await until(() => !$("narration").hidden, 40000));
+  await readLines();
+  log("quest prompt: " + $("prompt").textContent.slice(0, 60));
+  const connector = setInterval(() => { if ($("prompt").textContent.includes("connect it")) key("keydown", "KeyE"); }, 1500);
+  log("farms connected: " + await until(() => !$("narration").hidden, 60000) + " · " + $("line").textContent.split("\n")[0]);
+  clearInterval(connector);
+  await readLines();
+  log("over the market: " + await until(() => $("prompt").textContent.startsWith("Tap the light"), 30000));
+  clearInterval(cw4);
+  log("cards: " + JSON.stringify([...cards3]));
   key("keydown", "Enter");
   await until(() => !$("narration").hidden, 5000);
   log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);

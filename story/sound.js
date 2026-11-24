@@ -162,9 +162,25 @@ export function createSound() {
     o.connect(g); g.connect(master); o.start(at); o.stop(at + 0.25);
   }
 
+  // Morning birds: quick rising or falling whistles, in little phrases
+  function birds(out) {
+    every(2200, () => {
+      if (!enabled) return;
+      const t = ac.currentTime, base = 2400 + Math.random() * 1600, n = 2 + Math.floor(Math.random() * 4), up = Math.random() < 0.5;
+      for (let k = 0; k < n; k++) {
+        const o = ac.createOscillator(), g = ac.createGain(), at = t + k * 0.13;
+        o.type = "sine";
+        o.frequency.setValueAtTime(base * (up ? 0.85 : 1.15), at); o.frequency.exponentialRampToValueAtTime(base * (up ? 1.2 : 0.8), at + 0.09);
+        g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(0.02, at + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.11);
+        o.connect(g); g.connect(out.gain); o.start(at); o.stop(at + 0.12);
+      }
+    }, 2600);
+  }
+
   const SCENES = {
     forest(out) { wind(out, 0.6); crickets(out); owl(out); pad(out, 57); melody(out, 69); },
     heart(out) { drone(out, 55); bloodRush(out); pad(out, 52); melody(out, 64); },
+    fields(out) { wind(out, 0.35); birds(out); pad(out, 60); melody(out, 72); },
   };
 
   function stopScene() {
@@ -196,6 +212,18 @@ export function createSound() {
     },
     // 0 = night, 1 = dawn: brightens the pad and quietens the night creatures
     setWarmth(w) { warmth = w; },
+    // A soft bell when something connects; each one a step higher up the scale
+    chime(step = 0) {
+      if (!ac || !enabled) return;
+      const t = ac.currentTime, note = 72 + PENTATONIC[step % 5] + 12 * Math.floor(step / 5);
+      [1, 2.01, 3.02].forEach((h, i) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = "sine"; o.frequency.value = midiToHz(note) * h;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime([0.09, 0.03, 0.015][i], t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 2.5);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 2.6);
+      });
+    },
     // A heartbeat, now. `speed` < 1 stretches the gap between lub and dub (slow motion).
     pulse(speed = 1) {
       if (!ac || !enabled) return;
