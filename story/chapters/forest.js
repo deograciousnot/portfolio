@@ -273,7 +273,7 @@ export default {
     const mistGeo = keep(new THREE.BufferGeometry());
     mistGeo.setAttribute("position", new THREE.BufferAttribute(mistPos, 3));
     const mistMat = keep(new THREE.PointsMaterial({ map: dot, size: 15, color: 0xbfd6cb, transparent: true, opacity: 0.09, depthWrite: false }));
-    scene.add(new THREE.Points(mistGeo, mistMat));
+    { const pts = new THREE.Points(mistGeo, mistMat); pts.frustumCulled = false; scene.add(pts); }   // moving points: skip stale bounds
 
     // ---------- Fireflies ----------
     const flyN = 140, flyPos = new Float32Array(flyN * 3), flySeed = [];
@@ -284,7 +284,7 @@ export default {
     const flyGeo = keep(new THREE.BufferGeometry());
     flyGeo.setAttribute("position", new THREE.BufferAttribute(flyPos, 3));
     const flyMat = keep(new THREE.PointsMaterial({ map: dot, size: 0.2, color: 0xffd98a, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending }));
-    scene.add(new THREE.Points(flyGeo, flyMat));
+    { const pts = new THREE.Points(flyGeo, flyMat); pts.frustumCulled = false; scene.add(pts); }
 
     // ---------- Falling leaves, always around the visitor ----------
     const leafN = 120, leafPos = new Float32Array(leafN * 3), leafSeed = [];
@@ -295,7 +295,7 @@ export default {
     for (let k = 0; k < leafN; k++) col.setHex([0xc9803a, 0xa8642c, 0x8c9a3a, 0xd59a4a][k % 4]).toArray(leafCol, k * 3);
     leafGeo.setAttribute("color", new THREE.BufferAttribute(leafCol, 3));
     const leafMat = keep(new THREE.PointsMaterial({ size: 0.13, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false }));
-    scene.add(new THREE.Points(leafGeo, leafMat));
+    { const pts = new THREE.Points(leafGeo, leafMat); pts.frustumCulled = false; scene.add(pts); }   // they follow the visitor
 
     // ---------- Moon, and the sun that rises at the end of the path ----------
     const moon = new THREE.Sprite(keep(new THREE.SpriteMaterial({ map: dot, color: 0xe6f0ff, transparent: true, opacity: 0.6, depthWrite: false, fog: false })));

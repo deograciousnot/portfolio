@@ -20,6 +20,15 @@ export default async function autotest() {
   await sleep(1500);
   document.querySelector(withSound ? ".start .go:not(.quiet)" : ".start .go.quiet").click();
   log(withSound ? "clicked Begin, with sound" : "clicked Begin quietly");
+  const onlyHeart = new URLSearchParams(location.search).get("chapter") === "2";
+  const readLines = async () => {
+    while (!$("narration").hidden) {
+      await until(() => $("narration").classList.contains("ready"), 20000);
+      log("line: " + $("line").textContent.split("\n")[0].slice(0, 50));
+      key("keydown", "Space"); key("keyup", "Space"); await sleep(300);
+    }
+  };
+  if (!onlyHeart) {
   log("cinema on: " + await until(() => document.body.classList.contains("cinema"), 5000));
   const cards = new Set();
   const cardWatch = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards.add(c.textContent.trim()); }, 100);
@@ -51,11 +60,39 @@ export default async function autotest() {
   key("keydown", "Enter");
   await until(() => !$("narration").hidden, 5000);
   log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);
-  while (!$("narration").hidden) {
-    await until(() => $("narration").classList.contains("ready"), 20000);
-    log("line: " + $("line").textContent.split("\n")[0].slice(0, 50));
-    key("keydown", "Space"); await sleep(300);
+  await readLines();
   }
+
+  // ---- Chapter 2: the heart ----
+  log("chapter 2 started: " + await until(() => $("chapter").textContent.startsWith("2"), 20000) + " · " + $("chapter").textContent);
+  const cards2 = new Set();
+  const cw3 = setInterval(() => { const c = $("card"); if (c.classList.contains("show")) cards2.add(c.textContent.trim()); }, 100);
+  log("heart narration: " + await until(() => !$("narration").hidden, 40000));
+  log("monitor visible: " + !!document.querySelector(".monitor:not([hidden])"));
+  await readLines();
+  log("quest prompt: " + $("prompt").textContent.slice(0, 60));
+  // Tap once per beat, right on it (needs ?debug, which exposes the heart's clock); without it, the quest times out
+  let lastK = null;
+  const tapper = setInterval(() => {
+    const h = window.story?.heart;
+    if (!h) return;
+    const { k, dt } = h.offsetFromBeat();
+    if (k !== lastK && Math.abs(dt) < 0.08) { lastK = k; key("keydown", "Space"); key("keyup", "Space"); }
+  }, 20);
+  log("rhythm quest done: " + await until(() => !$("narration").hidden, 60000));
+  clearInterval(tapper);
+  await readLines();
+  const guideWatch = setInterval(() => {
+    const h = window.story?.heart, c = window.story?.rig;
+    if (h?.guide.visible && c) log(`guide spark ${h.guide.position.distanceTo(c.position).toFixed(2)} ahead of the camera`);
+  }, 3000);
+  log("reached the apex: " + await until(() => $("prompt").textContent.startsWith("Tap the light"), 60000));
+  clearInterval(cw3); clearInterval(guideWatch);
+  log("cards in the flight: " + JSON.stringify([...cards2]));
+  key("keydown", "Enter");
+  await until(() => !$("narration").hidden, 5000);
+  log("fragment dots lit: " + document.querySelectorAll(".fragments li.got").length);
+  await readLines();
   log("end screen: " + await until(() => !$("end").hidden, 10000) + " · " + $("end-kicker").textContent);
   log("sound button: " + document.querySelector(".music").textContent);
   log("errors: " + (errors.length ? JSON.stringify(errors) : "none"));

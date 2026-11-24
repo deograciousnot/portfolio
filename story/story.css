@@ -38,6 +38,7 @@ h2 { font-size: clamp(2rem, 7vw, 4rem); }
 .go:hover { transform: translateY(-2px); }
 .go.quiet { background: transparent; color: var(--ink); border-color: rgba(255,255,255,.3); }
 .go:disabled { opacity: .4; cursor: wait; transform: none; }
+.end .credit { font: 0.7rem/1.5 var(--mono); font-style: normal; opacity: .7; margin-top: 28px; }
 .link { background: none; border: 0; color: var(--muted); font: 0.85rem var(--mono); text-decoration: underline; cursor: pointer; }
 .loading { font: 0.75rem var(--mono); color: var(--muted); margin-top: 20px; }
 
@@ -71,6 +72,11 @@ h2 { font-size: clamp(2rem, 7vw, 4rem); }
   border-radius: 999px; padding: 11px 18px; text-align: center; max-width: calc(100% - 28px); pointer-events: none; }
 .prompt .meter { display: block; height: 3px; margin-top: 8px; border-radius: 2px; background: rgba(255,255,255,.15); overflow: hidden; }
 .prompt .meter i { display: block; height: 100%; width: 0; background: var(--accent); }
+
+/* Heart monitor (chapter 2) */
+.monitor { position: fixed; z-index: 6; left: 14px; top: max(60px, calc(env(safe-area-inset-top) + 56px)); width: 240px; height: 70px;
+  background: rgba(10, 4, 5, 0.55); border: 1px solid rgba(255,107,85,.35); border-radius: 10px; backdrop-filter: blur(6px); pointer-events: none; }
+@media (max-width: 560px) { .monitor { width: 168px; height: 49px; top: auto; bottom: max(96px, calc(env(safe-area-inset-bottom) + 90px)); } }
 
 /* Fallback (no 3D) */
 .classic { background: #0b0f0d url("../img/forest.jpg") center / cover; }

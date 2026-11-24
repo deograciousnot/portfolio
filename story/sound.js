@@ -130,8 +130,41 @@ export function createSound() {
     }, 1800);
   }
 
+  // Blood rushing: low filtered noise that swells on each beat (see pulse())
+  let rush = null;
+  function bloodRush(out) {
+    const src = ac.createBufferSource(); src.buffer = noiseBuffer(); src.loop = true;
+    const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 180; lp.Q.value = 1.2;
+    const g = ac.createGain(); g.gain.value = 0.12;
+    src.connect(lp); lp.connect(g); g.connect(out.gain);
+    src.start();
+    rush = { lp, g };
+    out.stops.push(() => { src.stop(); rush = null; });
+  }
+
+  // A deep, warm drone under everything
+  function drone(out, hz = 55) {
+    const o = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain();
+    o.type = "sine"; o.frequency.value = hz; o2.type = "sine"; o2.frequency.value = hz * 1.5; o2.detune.value = 4;
+    g.gain.value = 0.05;
+    o.connect(g); o2.connect(g); g.connect(out.gain);
+    o.start(); o2.start();
+    out.stops.push(() => { o.stop(); o2.stop(); });
+  }
+
+  // One heartbeat: "lub" (a deep thump) then "dub" (a slightly higher, softer one)
+  function thump(at, hz, level) {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(hz, at); o.frequency.exponentialRampToValueAtTime(hz * 0.6, at + 0.14);
+    g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(level, at + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + 0.22);
+    o.connect(g); g.connect(master); o.start(at); o.stop(at + 0.25);
+  }
+
   const SCENES = {
     forest(out) { wind(out, 0.6); crickets(out); owl(out); pad(out, 57); melody(out, 69); },
+    heart(out) { drone(out, 55); bloodRush(out); pad(out, 52); melody(out, 64); },
   };
 
   function stopScene() {
@@ -163,5 +196,17 @@ export function createSound() {
     },
     // 0 = night, 1 = dawn: brightens the pad and quietens the night creatures
     setWarmth(w) { warmth = w; },
+    // A heartbeat, now. `speed` < 1 stretches the gap between lub and dub (slow motion).
+    pulse(speed = 1) {
+      if (!ac || !enabled) return;
+      const t = ac.currentTime;
+      thump(t, 62, 0.55);
+      thump(t + 0.3 / Math.max(speed, 0.2), 78, 0.32);
+      if (rush) {
+        rush.lp.frequency.cancelScheduledValues(t);
+        rush.lp.frequency.setValueAtTime(520, t); rush.lp.frequency.setTargetAtTime(180, t + 0.05, 0.25);
+        rush.g.gain.setValueAtTime(0.22, t); rush.g.gain.setTargetAtTime(0.12, t + 0.05, 0.3);
+      }
+    },
   };
 }

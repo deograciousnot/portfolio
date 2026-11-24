@@ -3,9 +3,10 @@
 // Each chapter (story/chapters/*.js) builds its own world and plays itself using the helpers in `ctx`.
 import * as THREE from "three";
 import forest from "./chapters/forest.js";
+import heart from "./chapters/heart.js";
 import { createSound } from "./sound.js";
 
-const CHAPTERS = [forest];   // more worlds are added here, in order
+const CHAPTERS = [forest, heart];   // more worlds are added here, in order
 const TOTAL_FRAGMENTS = 8;   // one per world in the finished story
 const SAVE_KEY = "long-way-round";
 const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -255,7 +256,7 @@ async function play(from) {
     $("chapter").textContent = `${k + 1} · ${ch.title}`;
     sound.scene(ch.id);
     canvas.style.opacity = "0";
-    const world = ch.build(ctx);           // build the world first, then fade in
+    const world = await ch.build(ctx);     // build the world first (some load data), then fade in
     await fade(false);
     await ch.play(ctx, world);
     await fade(true);
@@ -271,7 +272,7 @@ function showEnd() {
   const n = progress.fragments.length;
   $("end-kicker").textContent = `${n} of ${TOTAL_FRAGMENTS} fragments`;
   $("end-title").textContent = "To be continued…";
-  $("end-text").textContent = "The other worlds (the heartbeat, the fields, the gold vault, the launch pad, the server room, the drop and the deep end) are still being built. Come back soon.";
+  $("end-text").textContent = "The other worlds (the fields, the gold vault, the launch pad, the server room, the drop and the deep end) are still being built. Come back soon.";
   $("end").hidden = false;
 }
 
@@ -295,7 +296,8 @@ document.querySelectorAll(".start .go").forEach((b) => b.addEventListener("click
   $("start").classList.add("gone");
   setTimeout(() => { $("start").hidden = true; }, 1200);
   const from = Math.min(progress.chapter || 0, CHAPTERS.length - 1);
-  play(progress.fragments.length >= CHAPTERS.length ? 0 : from);
+  const jump = parseInt(params.get("chapter"), 10);         // for testing: ?chapter=2 starts at chapter 2
+  play(jump > 0 ? Math.min(jump - 1, CHAPTERS.length - 1) : progress.fragments.length >= CHAPTERS.length ? 0 : from);
 }));
 $("again").addEventListener("click", () => { progress = { fragments: [] }; save.write(progress); location.reload(); });
 
